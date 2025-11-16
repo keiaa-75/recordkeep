@@ -30,44 +30,56 @@ public class CsvService {
     public int importStudentsFromCsv(MultipartFile file) throws IOException, CsvValidationException, NumberFormatException, Exception {
         
         List<Student> studentsToSave = new ArrayList<>();
+        int rowCount = 0;
         
         try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
              CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build()) { // Skip header row
             
             String[] line;
             while ((line = csvReader.readNext()) != null) {
+                rowCount++;
+                System.out.println("Processing row " + rowCount + ": " + java.util.Arrays.toString(line));
+                
                 // Check if row has at least 8 columns
                 if (line.length < 8) {
+                    System.err.println("Skipping row " + rowCount + " - insufficient columns: " + line.length);
                     continue; // Skip malformed row
                 }
                 
-                Student student = new Student();
-                student.setLrn(line[0]);
-                student.setSurname(line[1]);
-                student.setFirstName(line[2]);
-                student.setMiddleInitial(line[3]);
-                student.setStrand(line[4]);
-                
-                // This is the most likely failure point:
                 try {
-                    // Try to convert the text "11" or "12" into a number
-                    student.setGradeLevel(Integer.parseInt(line[5]));
-                } catch (NumberFormatException e) {
-                    // If line[5] is "STEM" or "Grade 11", this fails and skips the row
-                    System.err.println("Skipping row with invalid Grade Level: " + line[5]);
-                    continue; 
+                    Student student = new Student();
+                    student.setLrn(line[0].trim());
+                    student.setSurname(line[1].trim());
+                    student.setFirstName(line[2].trim());
+                    student.setMiddleInitial(line[3].trim());
+                    student.setStrand(line[4].trim());
+                    
+                    try {
+                        student.setGradeLevel(Integer.parseInt(line[5].trim()));
+                    } catch (NumberFormatException e) {
+                        System.err.println("Skipping row " + rowCount + " with invalid Grade Level: [" + line[5] + "]");
+                        continue; 
+                    }
+                    
+                    student.setSection(line[6].trim());
+                    student.setContactNumber(line[7].trim());
+                    
+                    System.out.println("Successfully created student: " + student.getLrn());
+                    studentsToSave.add(student);
+                    
+                } catch (Exception e) {
+                    System.err.println("Error processing row " + rowCount + ": " + e.getMessage());
+                    e.printStackTrace();
+                    continue;
                 }
-                
-                student.setSection(line[6]);
-                student.setContactNumber(line[7]);
-                
-                studentsToSave.add(student);
             }
         }
         
+        System.out.println("Total rows processed: " + rowCount + ", Valid students: " + studentsToSave.size());
+        
         // If all rows were skipped (e.g., all had "Grade 11"), this list will be empty
         if (studentsToSave.isEmpty()) {
-            throw new Exception("No valid student records found in the file.");
+            throw new Exception("No valid student records found in the file. Processed " + rowCount + " rows.");
         }
         
         studentRepository.saveAll(studentsToSave);
