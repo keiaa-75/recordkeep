@@ -3,7 +3,7 @@ package com.shing.gatekeep.service;
 import com.shing.gatekeep.model.AttendanceRecord;
 import com.shing.gatekeep.model.Student;
 import com.shing.gatekeep.repository.AttendanceRepository;
-import com.shing.gatekeep.repository.AttendanceRecordRepository;
+import com.shing.gatekeep.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class AttendanceService {
 
     @Autowired
-    private AttendanceRecordRepository studentRepository; // Student Info Repo
+    private StudentRepository studentRepository; // Student Info Repo
 
     @Autowired
     private AttendanceRepository attendanceRepository; // Attendance Log Repo

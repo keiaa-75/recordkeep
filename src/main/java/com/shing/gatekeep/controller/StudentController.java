@@ -1,7 +1,7 @@
 package com.shing.gatekeep.controller;
 
 import com.shing.gatekeep.model.Student;
-import com.shing.gatekeep.repository.AttendanceRecordRepository; // Student Info Repo
+import com.shing.gatekeep.repository.StudentRepository; // Student Info Repo
 import com.shing.gatekeep.service.CsvService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class StudentController {
 
     @Autowired
-    private AttendanceRecordRepository studentRepository; // Student Info Repo
+    private StudentRepository studentRepository; // Student Info Repo
     
     @Autowired
     private CsvService csvService; 

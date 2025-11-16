@@ -1,7 +1,7 @@
 package com.shing.gatekeep.controller;
 
 import com.shing.gatekeep.repository.AttendanceRepository; 
-import com.shing.gatekeep.repository.AttendanceRecordRepository; 
+import com.shing.gatekeep.repository.StudentRepository; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ import java.time.LocalTime;
 public class DashboardController {
 
     @Autowired
-    private AttendanceRecordRepository studentRepository; // Student Info Repo
+    private StudentRepository studentRepository; // Student Info Repo
 
     @Autowired
     private AttendanceRepository attendanceRepository; // Attendance Log Repo

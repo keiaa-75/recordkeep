@@ -3,7 +3,7 @@ package com.shing.gatekeep.controller;
 import com.shing.gatekeep.model.AttendanceRecord;
 import com.shing.gatekeep.model.Student;
 import com.shing.gatekeep.repository.AttendanceRepository;
-import com.shing.gatekeep.repository.AttendanceRecordRepository;
+import com.shing.gatekeep.repository.StudentRepository;
 import com.shing.gatekeep.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,7 +28,7 @@ public class AttendanceController {
     private AttendanceRepository attendanceRepository; // Attendance Log Repo
 
     @Autowired
-    private AttendanceRecordRepository studentRepository; // Student Info Repo
+    private StudentRepository studentRepository; // Student Info Repo
     
     @Autowired
     private AttendanceService attendanceService;

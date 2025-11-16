@@ -1,7 +1,7 @@
 package com.shing.gatekeep.controller;
 
 import com.shing.gatekeep.model.Student;
-import com.shing.gatekeep.repository.AttendanceRecordRepository; // Student Info Repo
+import com.shing.gatekeep.repository.StudentRepository; // Student Info Repo
 import com.shing.gatekeep.service.QrCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,7 +21,7 @@ public class QrCodeController {
     private QrCodeService qrCodeService;
 
     @Autowired
-    private AttendanceRecordRepository studentRepository; // Student Info Repo
+    private StudentRepository studentRepository; // Student Info Repo
 
     @GetMapping("/qr-code")
     public String showQrGenerator(Model model,

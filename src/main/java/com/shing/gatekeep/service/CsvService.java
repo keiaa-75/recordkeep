@@ -1,7 +1,7 @@
 package com.shing.gatekeep.service;
 
 import com.shing.gatekeep.model.Student;
-import com.shing.gatekeep.repository.AttendanceRecordRepository;
+import com.shing.gatekeep.repository.StudentRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
@@ -20,7 +20,7 @@ import java.util.List;
 public class CsvService {
 
     @Autowired
-    private AttendanceRecordRepository studentRepository; // Your Student Info Repo
+    private StudentRepository studentRepository; // Your Student Info Repo
 
     /**
      * Reads a CSV file, parses it, and saves the students to the database.
