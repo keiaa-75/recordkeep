@@ -1,11 +1,10 @@
 package com.shing.gatekeep.controller;
 
 import com.shing.gatekeep.model.Student;
-import com.shing.gatekeep.repository.StudentRepository; // Student Info Repo
 import com.shing.gatekeep.service.CsvService;
+import com.shing.gatekeep.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,18 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/list") // URL for Student List
+@RequestMapping("/list")
 public class StudentController {
 
     @Autowired
-    private StudentRepository studentRepository; // Student Info Repo
+    private StudentService studentService;
     
     @Autowired
     private CsvService csvService; 
@@ -36,43 +31,12 @@ public class StudentController {
             @RequestParam(required = false) String section,
             Model model) {
         
-        List<Student> students = studentRepository.findAll(
-            Sort.by(Sort.Order.asc("surname"), Sort.Order.asc("firstName"))
-        );
-
-        // --- Filter Logic ---
-        if (gradeLevel != null) {
-            students = students.stream()
-                .filter(student -> student.getGradeLevel().equals(gradeLevel))
-                .collect(Collectors.toList());
-        }
-        if (section != null && !section.isEmpty()) {
-            students = students.stream()
-                .filter(student -> student.getSection().equalsIgnoreCase(section))
-                .collect(Collectors.toList());
-        }
-        String lowerCaseGlobalFilter = (globalFilter != null && !globalFilter.trim().isEmpty()) ? globalFilter.trim().toLowerCase(Locale.ROOT) : null;
-        if (lowerCaseGlobalFilter != null) {
-            students = students.stream()
-                .filter(student -> 
-                    student.getSurname().toLowerCase(Locale.ROOT).contains(lowerCaseGlobalFilter) ||
-                    student.getFirstName().toLowerCase(Locale.ROOT).contains(lowerCaseGlobalFilter) ||
-                    student.getLrn().toLowerCase(Locale.ROOT).contains(lowerCaseGlobalFilter)
-                )
-                .collect(Collectors.toList());
-        }
-        
-        List<Integer> uniqueGradeLevels = studentRepository.findAll().stream()
-                .map(Student::getGradeLevel).distinct().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-        List<String> uniqueSections = studentRepository.findAll().stream()
-                .map(Student::getSection).distinct().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-
-        model.addAttribute("students", students);
+        model.addAttribute("students", studentService.getFilteredStudents(globalFilter, gradeLevel, section));
         model.addAttribute("currentGlobalFilter", globalFilter);
         model.addAttribute("currentGradeLevel", gradeLevel);
         model.addAttribute("currentSection", section);
-        model.addAttribute("gradeLevels", uniqueGradeLevels);
-        model.addAttribute("sections", uniqueSections);
+        model.addAttribute("gradeLevels", studentService.getUniqueGradeLevels());
+        model.addAttribute("sections", studentService.getUniqueSections());
 
         return "list";
     }
@@ -81,19 +45,19 @@ public class StudentController {
     public String showAddForm(Model model) {
         model.addAttribute("student", new Student());
         model.addAttribute("pageTitle", "Add New Student");
-        return "add-edit-record"; // <-- FIX: Changed "student-form" to "add-edit-record"
+        return "add-edit-record";
     }
     
     @GetMapping("/edit/{lrn}")
     public String showEditForm(@PathVariable("lrn") String lrn, Model model, RedirectAttributes redirectAttributes) {
-        Optional<Student> studentOpt = studentRepository.findById(lrn);
+        Optional<Student> studentOpt = studentService.findById(lrn);
         if (studentOpt.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Student not found.");
             return "redirect:/list";
         }
         model.addAttribute("student", studentOpt.get());
         model.addAttribute("pageTitle", "Edit Student");
-        return "add-edit-record"; // <-- FIX: Changed "student-form" to "add-edit-record"
+        return "add-edit-record";
     }
 
     @PostMapping("/save")
@@ -101,16 +65,16 @@ public class StudentController {
                               RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("pageTitle", (student.getLrn() == null || student.getLrn().isEmpty()) ? "Add New Student" : "Edit Student");
-            return "add-edit-record"; // <-- FIX: Changed "student-form" to "add-edit-record"
+            return "add-edit-record";
         }
-        studentRepository.save(student);
+        studentService.save(student);
         redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
         return "redirect:/list";
     }
 
     @GetMapping("/delete/{lrn}")
     public String deleteStudent(@PathVariable("lrn") String lrn, RedirectAttributes redirectAttributes) {
-        studentRepository.deleteById(lrn);
+        studentService.deleteById(lrn);
         redirectAttributes.addFlashAttribute("successMessage", "Student deleted successfully.");
         return "redirect:/list";
     }
