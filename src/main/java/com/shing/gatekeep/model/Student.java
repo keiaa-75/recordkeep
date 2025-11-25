@@ -43,8 +43,9 @@ public class Student {
     @NotBlank(message = "Section is required")
     private String section;
 
-    @Pattern(regexp = "^(09|\\+639)\\d{9}$", message = "Must be a valid 11-digit PH mobile number")
-    private String contactNumber;
+    @NotBlank(message = "Sex is required")
+    @Pattern(regexp = "^(Male|Female)$", message = "Sex must be either 'Male' or 'Female'")
+    private String sex;
     
     public void setSection(String section) {
         if (section != null) { this.section = section.toUpperCase(); } 

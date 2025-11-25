@@ -90,7 +90,7 @@
                             <th>Strand</th>
                             <th>Grade</th>
                             <th>Section</th>
-                            <th>Contact</th>
+                            <th>Sex</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -103,7 +103,7 @@
                             <td th:text="${student.strand}"></td>
                             <td th:text="${student.gradeLevel}"></td>
                             <td th:text="${student.section}"></td>
-                            <td th:text="${student.contactNumber}"></td>
+                            <td th:text="${student.sex}"></td>
                             <td>
                                 <a th:href="@{/list/edit/{lrn}(lrn=${student.lrn})}" class="btn btn-sm btn-warning" title="Edit"><i class="bi bi-pencil"></i></a>
                                 <a th:href="@{/list/delete/{lrn}(lrn=${student.lrn})}" class="btn btn-sm btn-danger" title="Delete"

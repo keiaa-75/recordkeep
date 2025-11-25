@@ -100,11 +100,14 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="contactNumber" class="form-label">Contact # (e.g., 09123456789)</label>
-                                <input type="tel" th:field="*{contactNumber}" class="form-control" id="contactNumber"
-                                       pattern="^(09|\+639)\d{9}$" maxlength="11"
-                                       th:classappend="${#fields.hasErrors('contactNumber')} ? 'is-invalid' : ''">
-                                <div th:if="${#fields.hasErrors('contactNumber')}" class="invalid-feedback d-block" th:errors="*{contactNumber}"></div>
+                                <label for="sex" class="form-label">Sex</label>
+                                <select th:field="*{sex}" class="form-select" id="sex" required
+                                        th:classappend="${#fields.hasErrors('sex')} ? 'is-invalid' : ''">
+                                    <option value="">Select Sex...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('sex')}" class="invalid-feedback d-block" th:errors="*{sex}"></div>
                             </div>
 
                             <hr class="my-4">

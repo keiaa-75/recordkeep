@@ -25,7 +25,7 @@ public class CsvService {
     /**
      * Reads a CSV file, parses it, and saves the students to the database.
      * Assumes CSV columns are in this exact order:
-     * LRN, Surname, FirstName, MiddleInitial, Strand, GradeLevel, Section, ContactNumber
+     * LRN, Surname, FirstName, MiddleInitial, Strand, GradeLevel, Section, Sex
      */
     public int importStudentsFromCsv(MultipartFile file) throws IOException, CsvValidationException, NumberFormatException, Exception {
         
@@ -62,7 +62,7 @@ public class CsvService {
                     }
                     
                     student.setSection(line[6].trim());
-                    student.setContactNumber(line[7].trim());
+                    student.setSex(line[7].trim());
                     
                     System.out.println("Successfully created student: " + student.getLrn());
                     studentsToSave.add(student);
