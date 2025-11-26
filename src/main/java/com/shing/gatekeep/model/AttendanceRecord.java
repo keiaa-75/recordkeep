@@ -27,6 +27,7 @@ public class AttendanceRecord {
     @Transient private String strand;
     @Transient private Integer gradeLevel;
     @Transient private String section;
+    @Transient private String sex;
 
     public AttendanceRecord(String lrn, LocalDateTime attendanceTime) {
         this.lrn = lrn;

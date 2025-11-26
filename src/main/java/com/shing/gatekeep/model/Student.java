@@ -48,7 +48,6 @@ public class Student {
     private String sex;
     
     public void setSection(String section) {
-        if (section != null) { this.section = section.toUpperCase(); } 
-        else { this.section = null; }
+        this.section = (section != null) ? section.toUpperCase() : null;
     }
 }

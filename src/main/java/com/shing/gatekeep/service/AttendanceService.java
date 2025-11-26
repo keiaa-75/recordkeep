@@ -51,7 +51,7 @@ public class AttendanceService {
                + student.getSurname() + ".";
     }
 
-    public List<AttendanceRecord> getFilteredAttendanceRecords(LocalDate date, String searchStrand, Integer searchGrade, String searchSection) {
+    public List<AttendanceRecord> getFilteredAttendanceRecords(LocalDate date, String searchStrand, Integer searchGrade, String searchSection, String searchSex) {
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
         
@@ -70,12 +70,14 @@ public class AttendanceService {
                     record.setStrand(student.getStrand());
                     record.setGradeLevel(student.getGradeLevel());
                     record.setSection(student.getSection());
+                    record.setSex(student.getSex());
                 }
                 return record;
             })
             .filter(record -> searchStrand == null || searchStrand.isEmpty() || (record.getStrand() != null && record.getStrand().equalsIgnoreCase(searchStrand)))
             .filter(record -> searchGrade == null || (record.getGradeLevel() != null && record.getGradeLevel().equals(searchGrade)))
             .filter(record -> searchSection == null || searchSection.isEmpty() || (record.getSection() != null && record.getSection().equalsIgnoreCase(searchSection)))
+            .filter(record -> searchSex == null || searchSex.isEmpty() || (record.getSex() != null && record.getSex().equalsIgnoreCase(searchSex)))
             .collect(Collectors.toList());
     }
 

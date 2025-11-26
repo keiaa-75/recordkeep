@@ -41,11 +41,12 @@ public class AttendanceController {
             @RequestParam(required = false) String searchStrand,
             @RequestParam(required = false) Integer searchGrade,
             @RequestParam(required = false) String searchSection,
+            @RequestParam(required = false) String searchSex,
             Model model) {
         
         LocalDate date = (filterDate == null) ? LocalDate.now() : filterDate;
         
-        model.addAttribute("attendanceRecords", attendanceService.getFilteredAttendanceRecords(date, searchStrand, searchGrade, searchSection));
+        model.addAttribute("attendanceRecords", attendanceService.getFilteredAttendanceRecords(date, searchStrand, searchGrade, searchSection, searchSex));
         model.addAttribute("strandOptions", attendanceService.getStrandOptions());
         model.addAttribute("gradeOptions", attendanceService.getGradeOptions());
         model.addAttribute("sectionOptions", attendanceService.getSectionOptions());
@@ -53,6 +54,7 @@ public class AttendanceController {
         model.addAttribute("searchStrand", searchStrand);
         model.addAttribute("searchGrade", searchGrade);
         model.addAttribute("searchSection", searchSection);
+        model.addAttribute("searchSex", searchSex);
 
         return "attendance";
     }
