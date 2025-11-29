@@ -1,16 +1,17 @@
 package com.shing.recordkeep.service;
 
-import com.shing.recordkeep.model.Student;
-import com.shing.recordkeep.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.shing.recordkeep.model.Student;
+import com.shing.recordkeep.repository.StudentRepository;
 
 @Service
 public class StudentService {
@@ -29,13 +30,13 @@ public class StudentService {
 
         if (gradeLevel != null) {
             students = students.stream()
-                .filter(student -> student.getGradeLevel().equals(gradeLevel))
+                .filter(student -> student.getSection().getGradeLevel().equals(gradeLevel))
                 .collect(Collectors.toList());
         }
 
         if (section != null && !section.isEmpty()) {
             students = students.stream()
-                .filter(student -> student.getSection().equalsIgnoreCase(section))
+                .filter(student -> student.getSection().getSectionName().equalsIgnoreCase(section))
                 .collect(Collectors.toList());
         }
 
@@ -57,7 +58,7 @@ public class StudentService {
 
     public List<Integer> getUniqueGradeLevels() {
         return studentRepository.findAll().stream()
-            .map(Student::getGradeLevel)
+            .map(student -> student.getSection().getGradeLevel())
             .distinct()
             .sorted(Comparator.naturalOrder())
             .collect(Collectors.toList());
@@ -65,7 +66,7 @@ public class StudentService {
 
     public List<String> getUniqueSections() {
         return studentRepository.findAll().stream()
-            .map(Student::getSection)
+            .map(student -> student.getSection().getSectionName())
             .distinct()
             .sorted(Comparator.naturalOrder())
             .collect(Collectors.toList());

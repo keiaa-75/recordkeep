@@ -1,11 +1,12 @@
 package com.shing.recordkeep.repository;
 
-import com.shing.recordkeep.model.AttendanceRecord;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.shing.recordkeep.model.AttendanceRecord;
 
 @Repository
 // This manages AttendanceRecord (Key: Long ID)

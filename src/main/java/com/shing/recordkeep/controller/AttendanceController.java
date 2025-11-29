@@ -1,6 +1,7 @@
 package com.shing.recordkeep.controller;
 
-import com.shing.recordkeep.service.AttendanceService;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
+import com.shing.recordkeep.service.AttendanceService;
 
 @Controller
 public class AttendanceController {

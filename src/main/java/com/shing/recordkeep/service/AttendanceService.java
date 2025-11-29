@@ -1,12 +1,5 @@
 package com.shing.recordkeep.service;
 
-import com.shing.recordkeep.model.AttendanceRecord;
-import com.shing.recordkeep.model.Student;
-import com.shing.recordkeep.repository.AttendanceRepository;
-import com.shing.recordkeep.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,6 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shing.recordkeep.model.AttendanceRecord;
+import com.shing.recordkeep.model.Student;
+import com.shing.recordkeep.repository.AttendanceRepository;
+import com.shing.recordkeep.repository.StudentRepository;
 
 @Service
 public class AttendanceService {
@@ -67,9 +68,9 @@ public class AttendanceService {
                 if (student != null) {
                     record.setSurname(student.getSurname());
                     record.setFirstName(student.getFirstName());
-                    record.setStrand(student.getStrand());
-                    record.setGradeLevel(student.getGradeLevel());
-                    record.setSection(student.getSection());
+                    record.setStrand(student.getSection().getStrand());
+                    record.setGradeLevel(student.getSection().getGradeLevel());
+                    record.setSection(student.getSection().getSectionName());
                     record.setSex(student.getSex());
                 }
                 return record;
@@ -91,7 +92,7 @@ public class AttendanceService {
 
     public List<String> getSectionOptions() {
         return studentRepository.findAll().stream()
-            .map(Student::getSection)
+            .map(student -> student.getSection().getSectionName())
             .distinct()
             .sorted()
             .collect(Collectors.toList());

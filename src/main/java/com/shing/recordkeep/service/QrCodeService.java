@@ -1,11 +1,12 @@
 package com.shing.recordkeep.service;
 
-import com.shing.recordkeep.model.Student;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.shing.recordkeep.model.Student;
 
 @Service
 public class QrCodeService {
@@ -28,19 +29,19 @@ public class QrCodeService {
 
         if (searchStrand != null && !searchStrand.isEmpty()) {
             students = students.stream()
-                .filter(s -> s.getStrand().equalsIgnoreCase(searchStrand))
+                .filter(s -> s.getSection().getStrand().equalsIgnoreCase(searchStrand))
                 .collect(Collectors.toList());
         }
 
         if (searchGrade != null) {
             students = students.stream()
-                .filter(s -> s.getGradeLevel().equals(searchGrade))
+                .filter(s -> s.getSection().getGradeLevel().equals(searchGrade))
                 .collect(Collectors.toList());
         }
 
         if (searchSection != null && !searchSection.isEmpty()) {
             students = students.stream()
-                .filter(s -> s.getSection().equalsIgnoreCase(searchSection))
+                .filter(s -> s.getSection().getSectionName().equalsIgnoreCase(searchSection))
                 .collect(Collectors.toList());
         }
 
