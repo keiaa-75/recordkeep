@@ -1,11 +1,11 @@
-package com.shing.gatekeep;
+package com.shing.recordkeep;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GatekeepApplication {
+public class RecordKeepApplication {
     public static void main(String[] args) {
-        SpringApplication.run(GatekeepApplication.class, args);
+        SpringApplication.run(RecordKeepApplication.class, args);
     }
 }

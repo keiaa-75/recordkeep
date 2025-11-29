@@ -11,9 +11,9 @@
 	</parent>
 	
 	<groupId>com.shing</groupId>
-	<artifactId>gatekeep</artifactId>
+	<artifactId>recordkeep</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>GateKeep</name>
+	<name>Record Keep</name>
 	<description>Student Attendance System</description>
 	
 	<properties>

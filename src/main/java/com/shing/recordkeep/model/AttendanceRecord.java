@@ -1,4 +1,4 @@
-package com.shing.gatekeep.model;
+package com.shing.recordkeep.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

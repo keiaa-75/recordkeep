@@ -1,6 +1,6 @@
-package com.shing.gatekeep.repository;
+package com.shing.recordkeep.repository;
 
-import com.shing.gatekeep.model.Student;
+import com.shing.recordkeep.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

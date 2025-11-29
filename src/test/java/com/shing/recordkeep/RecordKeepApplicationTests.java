@@ -1,10 +1,10 @@
-package com.shing.gatekeep;
+package com.shing.recordkeep;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GatekeepApplicationTests {
+class RecordKeepApplicationTests {
 
 	@Test
 	void contextLoads() {

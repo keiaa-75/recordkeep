@@ -1,6 +1,6 @@
-package com.shing.gatekeep.controller;
+package com.shing.recordkeep.controller;
 
-import com.shing.gatekeep.service.QrCodeService;
+import com.shing.recordkeep.service.QrCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

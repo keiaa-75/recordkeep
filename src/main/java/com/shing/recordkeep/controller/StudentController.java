@@ -1,8 +1,8 @@
-package com.shing.gatekeep.controller;
+package com.shing.recordkeep.controller;
 
-import com.shing.gatekeep.model.Student;
-import com.shing.gatekeep.service.CsvService;
-import com.shing.gatekeep.service.StudentService;
+import com.shing.recordkeep.model.Student;
+import com.shing.recordkeep.service.CsvService;
+import com.shing.recordkeep.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

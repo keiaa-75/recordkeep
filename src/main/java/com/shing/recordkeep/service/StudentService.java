@@ -1,7 +1,7 @@
-package com.shing.gatekeep.service;
+package com.shing.recordkeep.service;
 
-import com.shing.gatekeep.model.Student;
-import com.shing.gatekeep.repository.StudentRepository;
+import com.shing.recordkeep.model.Student;
+import com.shing.recordkeep.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

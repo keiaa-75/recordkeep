@@ -1,6 +1,6 @@
-package com.shing.gatekeep.controller;
+package com.shing.recordkeep.controller;
 
-import com.shing.gatekeep.service.AttendanceService;
+import com.shing.recordkeep.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;

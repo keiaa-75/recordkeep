@@ -1,7 +1,7 @@
-package com.shing.gatekeep.controller;
+package com.shing.recordkeep.controller;
 
-import com.shing.gatekeep.repository.AttendanceRepository; 
-import com.shing.gatekeep.repository.StudentRepository; 
+import com.shing.recordkeep.repository.AttendanceRepository; 
+import com.shing.recordkeep.repository.StudentRepository; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
