@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Transient;
 
 import lombok.AllArgsConstructor;
@@ -22,12 +24,13 @@ public class AttendanceRecord {
     private Long id;
     private String lrn;
     private LocalDateTime attendanceTime;
+
+    @ManyToOne
+    @JoinColumn(name = "section_id")
+    private Section section;
     
     @Transient private String surname;
     @Transient private String firstName;
-    @Transient private String strand;
-    @Transient private Integer gradeLevel;
-    @Transient private String section;
     @Transient private String sex;
 
     public AttendanceRecord(String lrn, LocalDateTime attendanceTime) {

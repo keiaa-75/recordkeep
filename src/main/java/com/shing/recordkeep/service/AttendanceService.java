@@ -31,6 +31,8 @@ public class AttendanceService {
         if (studentOpt.isEmpty()) {
             return "Error: Student with LRN " + lrn + " not found.";
         }
+        
+        Student student = studentOpt.get();
 
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
@@ -39,14 +41,13 @@ public class AttendanceService {
                 lrn, startOfDay, endOfDay);
         
         if (!todaysRecords.isEmpty()) {
-            Student student = studentOpt.get();
             return "Warning: " + student.getFirstName() + " " + student.getSurname() + " has already scanned today.";
         }
         
         AttendanceRecord newRecord = new AttendanceRecord(lrn, LocalDateTime.now());
+        newRecord.setSection(student.getSection());
         attendanceRepository.save(newRecord);
         
-        Student student = studentOpt.get();
         return "Success: Attendance recorded for " 
                + student.getFirstName() + " " 
                + student.getSurname() + ".";
@@ -68,16 +69,13 @@ public class AttendanceService {
                 if (student != null) {
                     record.setSurname(student.getSurname());
                     record.setFirstName(student.getFirstName());
-                    record.setStrand(student.getSection().getStrand());
-                    record.setGradeLevel(student.getSection().getGradeLevel());
-                    record.setSection(student.getSection().getSectionName());
                     record.setSex(student.getSex());
                 }
                 return record;
             })
-            .filter(record -> searchStrand == null || searchStrand.isEmpty() || (record.getStrand() != null && record.getStrand().equalsIgnoreCase(searchStrand)))
-            .filter(record -> searchGrade == null || (record.getGradeLevel() != null && record.getGradeLevel().equals(searchGrade)))
-            .filter(record -> searchSection == null || searchSection.isEmpty() || (record.getSection() != null && record.getSection().equalsIgnoreCase(searchSection)))
+            .filter(record -> searchStrand == null || searchStrand.isEmpty() || (record.getSection() != null && record.getSection().getStrand().equalsIgnoreCase(searchStrand)))
+            .filter(record -> searchGrade == null || (record.getSection() != null && record.getSection().getGradeLevel().equals(searchGrade)))
+            .filter(record -> searchSection == null || searchSection.isEmpty() || (record.getSection() != null && record.getSection().getSectionName().equalsIgnoreCase(searchSection)))
             .filter(record -> searchSex == null || searchSex.isEmpty() || (record.getSex() != null && record.getSex().equalsIgnoreCase(searchSex)))
             .collect(Collectors.toList());
     }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.shing.recordkeep.model.Section;
 import com.shing.recordkeep.model.Student;
 import com.shing.recordkeep.service.CsvService;
 import com.shing.recordkeep.service.StudentService;
@@ -45,7 +46,9 @@ public class StudentController {
 
     @GetMapping("/add")
     public String showAddForm(Model model) {
-        model.addAttribute("student", new Student());
+        Student student = new Student();
+        student.setSection(new Section());
+        model.addAttribute("student", student);
         model.addAttribute("pageTitle", "Add New Student");
         return "add-edit-record";
     }

@@ -100,9 +100,9 @@
                             <td th:text="${student.surname}"></td>
                             <td th:text="${student.firstName}"></td>
                             <td th:text="${student.middleInitial}"></td>
-                            <td th:text="${student.strand}"></td>
-                            <td th:text="${student.gradeLevel}"></td>
-                            <td th:text="${student.section}"></td>
+                            <td th:text="${student.section?.strand}"></td>
+                            <td th:text="${student.section?.gradeLevel}"></td>
+                            <td th:text="${student.section?.sectionName}"></td>
                             <td th:text="${student.sex}"></td>
                             <td>
                                 <a th:href="@{/list/edit/{lrn}(lrn=${student.lrn})}" class="btn btn-sm btn-warning" title="Edit"><i class="bi bi-pencil"></i></a>

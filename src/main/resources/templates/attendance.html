@@ -92,9 +92,9 @@
                         <tr th:each="record : ${attendanceRecords}">
                             <td th:text="${record.surname}"></td>
                             <td th:text="${record.firstName}"></td>
-                            <td th:text="${record.strand}"></td>
-                            <td th:text="${record.gradeLevel}"></td>
-                            <td th:text="${record.section}"></td>
+                            <td th:text="${record.section?.strand}"></td>
+                            <td th:text="${record.section?.gradeLevel}"></td>
+                            <td th:text="${record.section?.sectionName}"></td>
                             <td th:text="${record.sex}"></td>
                             <td th:text="${#temporals.format(record.attendanceTime, 'hh:mm:ss a')}"></td>
                         </tr>

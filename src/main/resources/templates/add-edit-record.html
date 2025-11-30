@@ -69,18 +69,18 @@
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label for="gradeLevel" class="form-label">Grade Level (11 or 12)</label>
-                                    <select th:field="*{gradeLevel}" class="form-select" id="gradeLevel" required
-                                            th:classappend="${#fields.hasErrors('gradeLevel')} ? 'is-invalid' : ''">
+                                    <select th:field="*{section.gradeLevel}" class="form-select" id="gradeLevel" required
+                                            th:classappend="${#fields.hasErrors('section.gradeLevel')} ? 'is-invalid' : ''">
                                         <option value="">Select Grade...</option>
                                         <option value="11">11</option>
                                         <option value="12">12</option>
                                     </select>
-                                    <div th:if="${#fields.hasErrors('gradeLevel')}" class="invalid-feedback d-block" th:errors="*{gradeLevel}"></div>
+                                    <div th:if="${#fields.hasErrors('section.gradeLevel')}" class="invalid-feedback d-block" th:errors="*{section.gradeLevel}"></div>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="strand" class="form-label">Strand</label>
-                                    <select th:field="*{strand}" class="form-select" id="strand" required
-                                            th:classappend="${#fields.hasErrors('strand')} ? 'is-invalid' : ''">
+                                    <select th:field="*{section.strand}" class="form-select" id="strand" required
+                                            th:classappend="${#fields.hasErrors('section.strand')} ? 'is-invalid' : ''">
                                         <option value="">Select Strand...</option>
                                         <option value="STEM">STEM</option>
                                         <option value="TVL">TVL</option>
@@ -88,14 +88,14 @@
                                         <option value="ABM">ABM</option>
                                         <option value="GAS">GAS</option>
                                     </select>
-                                    <div th:if="${#fields.hasErrors('strand')}" class="invalid-feedback d-block" th:errors="*{strand}"></div>
+                                    <div th:if="${#fields.hasErrors('section.strand')}" class="invalid-feedback d-block" th:errors="*{section.strand}"></div>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="section" class="form-label">Section (Auto-Caps)</label>
-                                    <input type="text" th:field="*{section}" class="form-control" id="section" required
+                                    <label for="sectionName" class="form-label">Section (Auto-Caps)</label>
+                                    <input type="text" th:field="*{section.sectionName}" class="form-control" id="sectionName" required
                                            oninput="this.value = this.value.toUpperCase()"
-                                           th:classappend="${#fields.hasErrors('section')} ? 'is-invalid' : ''">
-                                    <div th:if="${#fields.hasErrors('section')}" class="invalid-feedback d-block" th:errors="*{section}"></div>
+                                           th:classappend="${#fields.hasErrors('section.sectionName')} ? 'is-invalid' : ''">
+                                    <div th:if="${#fields.hasErrors('section.sectionName')}" class="invalid-feedback d-block" th:errors="*{section.sectionName}"></div>
                                 </div>
                             </div>
 

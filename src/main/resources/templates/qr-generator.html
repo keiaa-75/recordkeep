@@ -115,8 +115,8 @@
                             </td>
                             <td th:text="${student.lrn}"></td>
                             <td th:text="${student.surname + ', ' + student.firstName + ' ' + student.middleInitial}"></td>
-                            <td th:text="${student.strand}"></td>
-                            <td th:text="${student.gradeLevel + ' - ' + student.section}"></td>
+                            <td th:text="${student.section?.strand}"></td>
+                            <td th:text="${student.section?.gradeLevel + ' - ' + student.section?.sectionName}"></td>
                         </tr>
                         <tr th:if="${students.isEmpty()}">
                             <td colspan="5" class="text-center text-muted p-4">No students found matching filters.</td>
