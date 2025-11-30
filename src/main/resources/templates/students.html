@@ -45,15 +45,14 @@
 
         <!-- Student List -->
         <div id="studentList">
-            <div th:each="student : ${students}" class="border-bottom border-dark py-3 student-item" 
+            <div th:each="student : ${students}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3 student-item" 
                  th:data-name="${student.firstName + ' ' + student.surname}" 
                  th:data-lrn="${student.lrn}" 
                  th:data-sex="${student.sex}">
                 <div class="d-flex align-items-center">
                     <div class="me-3">
-                        <div class="border border-2 rounded-circle p-2" style="width: 40px; height: 40px;">
-                            <i class="bi bi-circle"></i>
-                        </div>
+                        <!-- Status circle: red by default, green only if scanned today -->
+                        <div class="rounded-circle bg-danger" style="width: 12px; height: 12px;"></div>
                     </div>
                     <div class="flex-grow-1">
                         <div class="fw-bold" th:text="${student.firstName + ' ' + student.surname}">Student Name</div>
@@ -64,7 +63,9 @@
             
             <!-- Empty state -->
             <div th:if="${students == null or students.isEmpty()}" class="text-center text-muted py-5">
-                <p>No students in this section yet.</p>
+                <div class="bg-white border border-dark border-2 rounded-3 p-5">
+                    <p class="mb-0">No students in this section yet.</p>
+                </div>
             </div>
         </div>
     </div>
