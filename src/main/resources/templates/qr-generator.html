@@ -94,6 +94,7 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5>Select Students to Print/Download</h5>
                 <button onclick="window.print()" class="btn btn-success"><i class="bi bi-printer-fill"></i> Print Selected</button>
+                <button id="download-zip-btn" class="btn btn-primary"><i class="bi bi-file-earmark-zip-fill"></i> Download Selected as ZIP</button>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -192,6 +193,36 @@
                 printableArea.appendChild(cardDiv);
             });
         }
+
+        document.getElementById('download-zip-btn').addEventListener('click', () => {
+            const selectedLrns = Array.from(document.querySelectorAll('.qr-checkbox:checked'))
+                                      .map(cb => cb.getAttribute('data-lrn'));
+
+            if (selectedLrns.length === 0) {
+                alert('Please select at least one student to download QR codes for.');
+                return;
+            }
+
+            fetch('/download-qrs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedLrns),
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'qr-codes.zip';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(err => console.error('Error downloading zip:', err));
+        });
     </script>
 </body>
 </html>

@@ -43,6 +43,17 @@
             </div>
         </div>
 
+        <!-- QR Management Card -->
+        <div id="qr-management-card" class="card mb-4" style="display: none;">
+            <div class="card-body">
+                <h5 class="card-title">QR Code Management</h5>
+                <p class="card-text">Select the students you want to download QR codes for.</p>
+                <button id="download-zip-btn-students" class="btn btn-primary">
+                    <i class="bi bi-file-earmark-zip-fill"></i> Download Selected as ZIP
+                </button>
+            </div>
+        </div>
+
         <!-- Student List -->
         <div id="studentList">
             <div th:each="student : ${students}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3 student-item" 
@@ -57,6 +68,9 @@
                     <div class="flex-grow-1">
                         <div class="fw-bold" th:text="${student.firstName + ' ' + student.surname}">Student Name</div>
                         <div class="small text-muted" th:text="${student.lrn}">123456789012</div>
+                    </div>
+                    <div class="qr-checkbox-container" style="display: none;">
+                        <input type="checkbox" class="form-check-input student-qr-checkbox" th:data-lrn="${student.lrn}">
                     </div>
                 </div>
             </div>
@@ -88,7 +102,7 @@
             </button>
         </div>
         <div class="fab-item">
-            <button class="btn btn-outline-dark border-2 rounded-3 px-3 py-2">
+            <button id="manage-qr-btn" class="btn btn-outline-dark border-2 rounded-3 px-3 py-2">
                 <i class="bi bi-qr-code me-2"></i>Manage QR codes
             </button>
         </div>
@@ -199,6 +213,58 @@
             if (e.target.files.length > 0) {
                 e.target.closest('form').submit();
             }
+        });
+
+        // QR Management State
+        const manageQrBtn = document.getElementById('manage-qr-btn');
+        const qrManagementCard = document.getElementById('qr-management-card');
+        const downloadZipBtn = document.getElementById('download-zip-btn-students');
+        const fabIcon = manageQrBtn.querySelector('i');
+
+        manageQrBtn.addEventListener('click', () => {
+            const isQrStateActive = qrManagementCard.style.display === 'block';
+
+            if (isQrStateActive) {
+                qrManagementCard.style.display = 'none';
+                fabIcon.classList.remove('bi-x');
+                fabIcon.classList.add('bi-plus');
+                document.querySelectorAll('.qr-checkbox-container').forEach(c => c.style.display = 'none');
+            } else {
+                qrManagementCard.style.display = 'block';
+                fabIcon.classList.remove('bi-plus');
+                fabIcon.classList.add('bi-x');
+                document.querySelectorAll('.qr-checkbox-container').forEach(c => c.style.display = 'block');
+            }
+        });
+
+        downloadZipBtn.addEventListener('click', () => {
+            const selectedLrns = Array.from(document.querySelectorAll('.student-qr-checkbox:checked'))
+                                      .map(cb => cb.getAttribute('data-lrn'));
+
+            if (selectedLrns.length === 0) {
+                alert('Please select at least one student to download QR codes for.');
+                return;
+            }
+
+            fetch('/download-qrs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedLrns),
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+a.style.display = 'none';
+                a.href = url;
+                a.download = 'qr-codes.zip';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(err => console.error('Error downloading zip:', err));
         });
     </script>
 </body>
