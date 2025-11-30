@@ -44,6 +44,10 @@ public class StudentService {
             .collect(Collectors.toList());
 
         return students.stream()
+            .sorted((s1, s2) -> {
+                int surnameCompare = s1.getSurname().compareToIgnoreCase(s2.getSurname());
+                return surnameCompare != 0 ? surnameCompare : s1.getFirstName().compareToIgnoreCase(s2.getFirstName());
+            })
             .map(student -> new StudentWithAttendance(student, attendedLrns.contains(student.getLrn())))
             .collect(Collectors.toList());
     }
