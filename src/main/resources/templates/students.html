@@ -53,21 +53,21 @@
 
         <!-- Student List -->
         <div id="studentList">
-            <div th:each="student : ${students}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3 student-item" 
-                 th:data-name="${student.firstName + ' ' + student.surname}" 
-                 th:data-lrn="${student.lrn}" 
-                 th:data-sex="${student.sex}">
+            <div th:each="swa : ${students}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3 student-item" 
+                 th:data-name="${swa.student.firstName + ' ' + swa.student.surname}" 
+                 th:data-lrn="${swa.student.lrn}" 
+                 th:data-sex="${swa.student.sex}">
                 <div class="d-flex align-items-center">
                     <div class="me-3">
                         <!-- Status circle: red by default, green only if scanned today -->
-                        <div class="rounded-circle bg-danger" style="width: 12px; height: 12px;"></div>
+                        <div class="rounded-circle" th:classappend="${swa.attendedToday} ? 'bg-success' : 'bg-danger'" style="width: 12px; height: 12px;"></div>
                     </div>
                     <div class="flex-grow-1">
-                        <div class="fw-bold" th:text="${student.firstName + ' ' + student.surname}">Student Name</div>
-                        <div class="small text-muted" th:text="${student.lrn}">123456789012</div>
+                        <div class="fw-bold" th:text="${swa.student.firstName + ' ' + swa.student.surname}">Student Name</div>
+                        <div class="small text-muted" th:text="${swa.student.lrn}">123456789012</div>
                     </div>
                     <div class="qr-checkbox-container" style="display: none;">
-                        <input type="checkbox" class="form-check-input student-qr-checkbox" th:data-lrn="${student.lrn}">
+                        <input type="checkbox" class="form-check-input student-qr-checkbox" th:data-lrn="${swa.student.lrn}">
                     </div>
                 </div>
             </div>

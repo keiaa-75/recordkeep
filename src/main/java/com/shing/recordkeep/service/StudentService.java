@@ -1,8 +1,7 @@
 package com.shing.recordkeep.service;
 
-import java.util.Comparator;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -12,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.shing.recordkeep.model.Section;
 import com.shing.recordkeep.model.Student;
+import com.shing.recordkeep.model.dto.StudentWithAttendance;
+import com.shing.recordkeep.repository.AttendanceRepository;
 import com.shing.recordkeep.repository.SectionRepository;
 import com.shing.recordkeep.repository.StudentRepository;
 
@@ -24,56 +25,26 @@ public class StudentService {
     @Autowired
     private SectionRepository sectionRepository;
 
+    @Autowired
+    private AttendanceRepository attendanceRepository;
+
     public List<Student> getAllStudentsSorted() {
         return studentRepository.findAll(
             Sort.by(Sort.Order.asc("surname"), Sort.Order.asc("firstName"))
         );
     }
 
-    public List<Student> getFilteredStudents(String globalFilter, Integer gradeLevel, String section) {
-        List<Student> students = getAllStudentsSorted();
-
-        if (gradeLevel != null) {
-            students = students.stream()
-                .filter(student -> student.getSection().getGradeLevel().equals(gradeLevel))
-                .collect(Collectors.toList());
-        }
-
-        if (section != null && !section.isEmpty()) {
-            students = students.stream()
-                .filter(student -> student.getSection().getSectionName().equalsIgnoreCase(section))
-                .collect(Collectors.toList());
-        }
-
-        String lowerCaseGlobalFilter = (globalFilter != null && !globalFilter.trim().isEmpty()) 
-            ? globalFilter.trim().toLowerCase(Locale.ROOT) : null;
-        
-        if (lowerCaseGlobalFilter != null) {
-            students = students.stream()
-                .filter(student -> 
-                    student.getSurname().toLowerCase(Locale.ROOT).contains(lowerCaseGlobalFilter) ||
-                    student.getFirstName().toLowerCase(Locale.ROOT).contains(lowerCaseGlobalFilter) ||
-                    student.getLrn().toLowerCase(Locale.ROOT).contains(lowerCaseGlobalFilter)
-                )
-                .collect(Collectors.toList());
-        }
-
-        return students;
-    }
-
-    public List<Integer> getUniqueGradeLevels() {
-        return studentRepository.findAll().stream()
-            .map(student -> student.getSection().getGradeLevel())
-            .distinct()
-            .sorted(Comparator.naturalOrder())
+    public List<StudentWithAttendance> getStudentsWithAttendanceBySection(Long sectionId) {
+        List<Student> students = studentRepository.findBySectionId(sectionId);
+        List<String> attendedLrns = attendanceRepository.findByAttendanceTimeBetween(
+                LocalDate.now().atStartOfDay(),
+                LocalDate.now().plusDays(1).atStartOfDay()
+            ).stream()
+            .map(ar -> ar.getLrn())
             .collect(Collectors.toList());
-    }
 
-    public List<String> getUniqueSections() {
-        return studentRepository.findAll().stream()
-            .map(student -> student.getSection().getSectionName())
-            .distinct()
-            .sorted(Comparator.naturalOrder())
+        return students.stream()
+            .map(student -> new StudentWithAttendance(student, attendedLrns.contains(student.getLrn())))
             .collect(Collectors.toList());
     }
 
@@ -100,5 +71,13 @@ public class StudentService {
 
     public List<Student> getStudentsBySection(Long sectionId) {
         return studentRepository.findBySectionId(sectionId);
+    }
+
+    public List<String> getUniqueSectionNames() {
+        return sectionRepository.findAll().stream()
+            .map(Section::getSectionName)
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
     }
 }

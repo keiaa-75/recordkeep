@@ -1,6 +1,7 @@
 package com.shing.recordkeep.controller;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.shing.recordkeep.model.AttendanceRecord;
 import com.shing.recordkeep.service.AttendanceService;
 
 @Controller
@@ -26,14 +28,20 @@ public class AttendanceController {
 
     @PostMapping("/scan") 
     public String recordAttendance(@RequestParam String lrn, RedirectAttributes redirectAttributes) {
-        String result = attendanceService.recordAttendance(lrn);
-        
-        if (result.startsWith("Error") || result.startsWith("Warning")) {
-            redirectAttributes.addFlashAttribute("errorMessage", result);
+        Map<String, Object> result = attendanceService.recordAttendance(lrn);
+        String message = (String) result.get("message");
+        AttendanceRecord record = (AttendanceRecord) result.get("attendanceRecord");
+
+        if (message.startsWith("Error") || message.startsWith("Warning")) {
+            redirectAttributes.addFlashAttribute("errorMessage", message);
+            return "redirect:/scan";
         } else {
-            redirectAttributes.addFlashAttribute("successMessage", result);
+            redirectAttributes.addFlashAttribute("successMessage", message);
+            if (record != null && record.getSection() != null) {
+                return "redirect:/sections/" + record.getSection().getId() + "/students";
+            }
+            return "redirect:/scan"; // Fallback
         }
-        return "redirect:/scan";
     }
 
     @GetMapping("/report")

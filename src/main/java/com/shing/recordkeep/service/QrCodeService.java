@@ -60,7 +60,7 @@ public class QrCodeService {
     }
 
     public List<String> getSectionOptions() {
-        return studentService.getUniqueSections();
+        return studentService.getUniqueSectionNames();
     }
 
     public byte[] generateQrCodeImage(String lrn, int width, int height) throws Exception {

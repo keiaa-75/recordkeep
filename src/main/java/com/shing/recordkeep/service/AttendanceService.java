@@ -3,6 +3,7 @@ package com.shing.recordkeep.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,11 +26,14 @@ public class AttendanceService {
     @Autowired
     private AttendanceRepository attendanceRepository;
     
-    public String recordAttendance(String lrn) {
-        
+    public Map<String, Object> recordAttendance(String lrn) {
+        Map<String, Object> result = new HashMap<>();
+
         Optional<Student> studentOpt = studentRepository.findById(lrn); 
         if (studentOpt.isEmpty()) {
-            return "Error: Student with LRN " + lrn + " not found.";
+            result.put("message", "Error: Student with LRN " + lrn + " not found.");
+            result.put("attendanceRecord", null);
+            return result;
         }
         
         Student student = studentOpt.get();
@@ -41,16 +45,20 @@ public class AttendanceService {
                 lrn, startOfDay, endOfDay);
         
         if (!todaysRecords.isEmpty()) {
-            return "Warning: " + student.getFirstName() + " " + student.getSurname() + " has already scanned today.";
+            result.put("message", "Warning: " + student.getFirstName() + " " + student.getSurname() + " has already scanned today.");
+            result.put("attendanceRecord", todaysRecords.get(0));
+            return result;
         }
         
         AttendanceRecord newRecord = new AttendanceRecord(lrn, LocalDateTime.now());
         newRecord.setSection(student.getSection());
         attendanceRepository.save(newRecord);
         
-        return "Success: Attendance recorded for " 
+        result.put("message", "Success: Attendance recorded for " 
                + student.getFirstName() + " " 
-               + student.getSurname() + ".";
+               + student.getSurname() + ".");
+        result.put("attendanceRecord", newRecord);
+        return result;
     }
 
     public List<AttendanceRecord> getFilteredAttendanceRecords(LocalDate date, String searchStrand, Integer searchGrade, String searchSection, String searchSex) {

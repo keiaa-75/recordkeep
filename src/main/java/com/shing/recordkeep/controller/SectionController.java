@@ -50,7 +50,7 @@ public class SectionController {
     @GetMapping("/sections/{sectionId}/students")
     public String manageStudents(@PathVariable Long sectionId, Model model, RedirectAttributes redirectAttributes) {
         try {
-            model.addAttribute("students", studentService.getStudentsBySection(sectionId));
+            model.addAttribute("students", studentService.getStudentsWithAttendanceBySection(sectionId));
             model.addAttribute("sectionId", sectionId);
             return "students";
         } catch (Exception e) {
