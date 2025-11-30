@@ -9,21 +9,24 @@
     <style>
         body { padding-bottom: 80px; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; }
+        .fab { position: fixed; bottom: 90px; right: 20px; width: 56px; height: 56px; border-radius: 50%; }
     </style>
 </head>
 <body class="bg-light">
-    <div class="container py-4">
+    <div class="container-fluid p-0">
         <!-- Header -->
-        <div class="d-flex align-items-center mb-4">
-            <a th:href="@{/}" class="text-dark me-3">
-                <i class="bi bi-chevron-left fs-4"></i>
-            </a>
-            <h4 class="fw-bold mb-0">Select section</h4>
+        <div class="bg-white border-bottom border-dark border-2 p-4">
+            <div class="d-flex align-items-center">
+                <a th:href="@{/}" class="text-dark me-3">
+                    <i class="bi bi-chevron-left fs-4"></i>
+                </a>
+                <h4 class="fw-bold mb-0">Select section</h4>
+            </div>
         </div>
 
         <!-- Section List -->
-        <div class="mb-4">
-            <div th:each="section : ${sections}" class="border-bottom border-dark py-3">
+        <div class="container py-4">
+            <div th:each="section : ${sections}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3">
                 <a th:href="@{/sections/{id}/students(id=${section.id})}" class="text-decoration-none text-dark d-block">
                     <div class="fw-bold" th:text="${section.gradeLevel + ' - ' + section.strand + ' - ' + section.sectionName}">Grade 11 - STEM - Newton</div>
                 </a>
@@ -31,17 +34,17 @@
             
             <!-- Empty state if no sections -->
             <div th:if="${sections == null or sections.isEmpty()}" class="text-center text-muted py-5">
-                <p>No sections available. Create your first section to get started.</p>
+                <div class="bg-white border border-dark border-2 rounded-3 p-5">
+                    <p class="mb-0">No sections available. Create your first section to get started.</p>
+                </div>
             </div>
         </div>
-
-        <!-- New Section Button -->
-        <div class="d-flex justify-content-end mb-4">
-            <button type="button" class="btn btn-outline-dark border-2 rounded-3 px-4" data-bs-toggle="modal" data-bs-target="#newSectionModal">
-                New section
-            </button>
-        </div>
     </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab btn btn-dark d-flex align-items-center justify-content-center" type="button" data-bs-toggle="modal" data-bs-target="#newSectionModal">
+        <i class="bi bi-plus fs-4"></i>
+    </button>
 
     <!-- New Section Modal -->
     <div class="modal fade" id="newSectionModal" tabindex="-1">

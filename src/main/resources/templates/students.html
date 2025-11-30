@@ -15,14 +15,19 @@
     </style>
 </head>
 <body class="bg-light">
-    <div class="container py-4">
+    <div class="container-fluid p-0">
         <!-- Header -->
-        <div class="d-flex align-items-center mb-4">
-            <a th:href="@{/sections}" class="text-dark me-3">
-                <i class="bi bi-chevron-left fs-4"></i>
-            </a>
-            <h4 class="fw-bold mb-0">Manage students</h4>
+        <div class="bg-white border-bottom border-dark border-2 p-4">
+            <div class="d-flex align-items-center">
+                <a th:href="@{/sections}" class="text-dark me-3">
+                    <i class="bi bi-chevron-left fs-4"></i>
+                </a>
+                <h4 class="fw-bold mb-0">Manage students</h4>
+            </div>
         </div>
+
+        <!-- Content -->
+        <div class="container py-4">
 
         <!-- Search and Filter -->
         <div class="row mb-4 g-2">
