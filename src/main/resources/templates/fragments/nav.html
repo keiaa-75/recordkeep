@@ -1,0 +1,19 @@
+<div th:fragment="nav(active)" xmlns:th="http://www.thymeleaf.org" 
+     class="bg-white border-top border-dark border-2 d-flex"
+     style="position: fixed; bottom: 0; left: 0; right: 0; height: 70px;">
+    <a th:href="@{/}" class="flex-fill d-flex flex-column align-items-center justify-content-center text-decoration-none border-end border-dark border-2"
+       th:classappend="${active == 'home'} ? 'bg-dark text-white' : 'text-dark'">
+        <i class="bi" th:classappend="${active == 'home'} ? 'bi-house-fill' : 'bi-house'"></i>
+        <small>Home</small>
+    </a>
+    <a th:href="@{/sections}" class="flex-fill d-flex flex-column align-items-center justify-content-center text-decoration-none border-end border-dark border-2"
+       th:classappend="${active == 'list'} ? 'bg-dark text-white' : 'text-dark'">
+        <i class="bi bi-list-ul"></i>
+        <small>List</small>
+    </a>
+    <a th:href="@{/scan}" class="flex-fill d-flex flex-column align-items-center justify-content-center text-decoration-none"
+       th:classappend="${active == 'scan'} ? 'bg-dark text-white' : 'text-dark'">
+        <i class="bi bi-qr-code-scan"></i>
+        <small>Scan</small>
+    </a>
+</div>

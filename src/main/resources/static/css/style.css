@@ -1,12 +1,56 @@
 
-body { padding-bottom: 80px; }
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; }
-.btn:hover * { color: white !important; }
-body.error-page { display: flex; flex-direction: column; min-height: 100vh; }
-.main-content { flex: 1; }
-.fab { position: fixed; bottom: 90px; right: 20px; width: 56px; height: 56px; border-radius: 50%; }
-.fab-menu { position: fixed; bottom: 160px; right: 20px; }
-.fab-item { margin-bottom: 10px; }
-#qr-reader { width: 100%; border-radius: 8px; }
-#qr-reader__home_section_header { display: none; }
-.scanner-container { height: calc(100vh - 300px); }
+/* Layout */
+body {
+    padding-bottom: 80px;
+}
+
+/* Button Hover Effects */
+.btn:hover * {
+    color: white !important;
+}
+
+/* Error Page Layout */
+body.error-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+}
+
+/* Floating Action Button */
+.fab {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+}
+
+.fab-menu {
+    position: fixed;
+    bottom: 160px;
+    right: 20px;
+}
+
+.fab-item {
+    margin-bottom: 10px;
+}
+
+/* QR Scanner */
+#qr-reader {
+    width: 100%;
+    border-radius: 8px;
+}
+
+#qr-reader__home_section_header {
+    display: none;
+}
+
+.scanner-container {
+    height: calc(100vh - 300px);
+}
+
