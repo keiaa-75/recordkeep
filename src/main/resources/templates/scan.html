@@ -23,12 +23,11 @@
 
         <!-- Success/Error Messages -->
         <div class="container">
-            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
-            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+            <div id="alertContainer"></div>
         </div>
 
         <!-- Hidden Form -->
-        <form id="scanForm" th:action="@{/scan}" method="post" style="display: none;">
+        <form id="scanForm" style="display: none;">
             <input type="hidden" id="lrn" name="lrn">
         </form>
     </div>
@@ -42,18 +41,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex align-items-center">
-                        <div class="me-3">
-                            <div class="border border-dark border-2 rounded-2 p-3" style="width: 60px; height: 60px;">
-                                <i class="bi bi-person-fill fs-3"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="fw-bold mb-1">Student name:</div>
-                            <div id="studentName" class="mb-2">Yang, Tzu Hsien</div>
-                            <div class="fw-bold mb-1">Time scanned:</div>
-                            <div id="scanTime">09:02:37 PM</div>
-                        </div>
+                    <div>
+                        <div class="fw-bold mb-1">Student name:</div>
+                        <div id="studentName" class="mb-2"></div>
+                        <div class="fw-bold mb-1">Time scanned:</div>
+                        <div id="scanTime"></div>
                     </div>
                 </div>
             </div>
@@ -63,48 +55,6 @@
     <div th:replace="~{fragments/nav :: nav('scan')}"></div>
     <div th:replace="~{fragments/scripts :: scripts}"></div>
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let isProcessing = false;
-            const form = document.getElementById('scanForm');
-            const lrnInput = document.getElementById('lrn');
-            const studentModal = new bootstrap.Modal(document.getElementById('studentModal'));
-
-            function onScanSuccess(decodedText, decodedResult) {
-                if (isProcessing || !/^\d{12}$/.test(decodedText)) {
-                    return;
-                }
-                isProcessing = true;
-                
-                // Show modal with student details
-                document.getElementById('studentName').textContent = 'Yang, Tzu Hsien'; // This should come from server
-                document.getElementById('scanTime').textContent = new Date().toLocaleTimeString();
-                studentModal.show();
-                
-                // Submit form
-                lrnInput.value = decodedText;
-                setTimeout(() => {
-                    form.submit();
-                }, 2000);
-                
-                html5QrcodeScanner.clear().catch(err => console.error("Failed to clear scanner:", err));
-            }
-            
-            function onScanError(errorMessage) {
-                if (!errorMessage.includes("QR code not found")) {
-                    console.error("QR Scanner Error:", errorMessage);
-                }
-            }
-
-            const config = {
-                fps: 10,
-                qrbox: { width: 250, height: 250 },
-                rememberLastUsedCamera: true,
-                videoConstraints: { facingMode: "environment" }
-            };
-            const html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", config, false);
-            html5QrcodeScanner.render(onScanSuccess, onScanError);
-        });
-    </script>
+    <script th:src="@{/js/scan.js}"></script>
 </body>
 </html>

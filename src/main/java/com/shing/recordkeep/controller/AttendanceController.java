@@ -1,18 +1,19 @@
 package com.shing.recordkeep.controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.shing.recordkeep.model.AttendanceRecord;
 import com.shing.recordkeep.service.AttendanceService;
 
 @Controller
@@ -26,22 +27,24 @@ public class AttendanceController {
         return "scan";
     }
 
-    @PostMapping("/scan") 
-    public String recordAttendance(@RequestParam String lrn, RedirectAttributes redirectAttributes) {
+    @PostMapping("/scan")
+    public ResponseEntity<Map<String, Object>> recordAttendance(@RequestBody Map<String, String> payload) {
+        String lrn = payload.get("lrn");
         Map<String, Object> result = attendanceService.recordAttendance(lrn);
+        Map<String, Object> response = new HashMap<>();
+        
         String message = (String) result.get("message");
-        AttendanceRecord record = (AttendanceRecord) result.get("attendanceRecord");
-
-        if (message.startsWith("Error") || message.startsWith("Warning")) {
-            redirectAttributes.addFlashAttribute("errorMessage", message);
-            return "redirect:/scan";
-        } else {
-            redirectAttributes.addFlashAttribute("successMessage", message);
-            if (record != null && record.getSection() != null) {
-                return "redirect:/sections/" + record.getSection().getId() + "/students";
-            }
-            return "redirect:/scan"; // Fallback
+        response.put("message", message);
+        
+        if (result.get("student") != null) {
+            com.shing.recordkeep.model.Student student = (com.shing.recordkeep.model.Student) result.get("student");
+            response.put("studentName", student.getSurname() + ", " + student.getFirstName());
         }
+        
+        boolean success = !message.startsWith("Error") && !message.startsWith("Warning");
+        response.put("success", success);
+        
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/report")

@@ -33,6 +33,7 @@ public class AttendanceService {
         if (studentOpt.isEmpty()) {
             result.put("message", "Error: Student with LRN " + lrn + " not found.");
             result.put("attendanceRecord", null);
+            result.put("student", null);
             return result;
         }
         
@@ -47,6 +48,7 @@ public class AttendanceService {
         if (!todaysRecords.isEmpty()) {
             result.put("message", "Warning: " + student.getFirstName() + " " + student.getSurname() + " has already scanned today.");
             result.put("attendanceRecord", todaysRecords.get(0));
+            result.put("student", student);
             return result;
         }
         
@@ -58,6 +60,7 @@ public class AttendanceService {
                + student.getFirstName() + " " 
                + student.getSurname() + ".");
         result.put("attendanceRecord", newRecord);
+        result.put("student", student);
         return result;
     }
 
