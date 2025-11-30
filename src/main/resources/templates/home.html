@@ -34,7 +34,7 @@
                 <div class="card border-dark border-2 rounded-3">
                     <div class="card-body text-center py-3">
                         <div class="small text-muted mb-1">Present today</div>
-                        <div class="display-4 fw-bold text-dark" th:text="${totalPresent}">1,267</div>
+                        <div class="display-4 fw-bold text-dark" th:text="${studentsPresentToday}">1,267</div>
                     </div>
                 </div>
             </div>
@@ -69,17 +69,7 @@
                     </div>
                 </a>
 
-                <a th:href="@{/qr-code}" class="btn btn-outline-dark border-2 rounded-3 w-100 p-3 text-start">
-                    <div class="d-flex align-items-center">
-                        <div class="border border-dark border-2 rounded-2 p-2 me-3">
-                            <i class="bi bi-qr-code fs-5"></i>
-                        </div>
-                        <div>
-                            <div class="fw-bold">Manage QR</div>
-                            <div class="small text-muted">Generate and print student QR codes</div>
-                        </div>
-                    </div>
-                </a>
+
             </div>
         </div>
     </div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error | RecordKeep</title>
+    <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body { display: flex; flex-direction: column; min-height: 100vh; }
+        .main-content { flex: 1; }
+        .bottom-nav { position: sticky; bottom: 0; }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div class="main-content container d-flex align-items-center justify-content-center">
+        <div class="card border-dark border-2 rounded-3" style="width: 25rem;">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-exclamation-triangle-fill text-dark" style="font-size: 4rem;"></i>
+                <h3 class="fw-bold my-3" th:text="${status != null ? status + ' ' + error : 'An error occurred'}">An error occurred</h3>
+                <p class="text-muted small">Something went wrong, but we're working on fixing it.</p>
+                <div class="d-flex gap-2 mt-4">
+                    <a th:href="@{/}" class="btn btn-dark rounded-3 flex-fill">Go Home</a>
+                    <a href="javascript:history.back()" class="btn btn-outline-dark border-2 rounded-3 flex-fill">Go Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav bg-white border-top border-dark border-2 d-flex">
+        <a th:href="@{/}" class="flex-fill d-flex flex-column align-items-center justify-content-center text-decoration-none text-dark border-end border-dark border-2">
+            <i class="bi bi-house"></i>
+            <small>Home</small>
+        </a>
+        <a th:href="@{/sections}" class="flex-fill d-flex flex-column align-items-center justify-content-center text-decoration-none text-dark border-end border-dark border-2">
+            <i class="bi bi-list-ul"></i>
+            <small>List</small>
+        </a>
+        <a th:href="@{/scan}" class="flex-fill d-flex flex-column align-items-center justify-content-center text-decoration-none text-dark">
+            <i class="bi bi-qr-code-scan"></i>
+            <small>Scan</small>
+        </a>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

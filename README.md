@@ -5,7 +5,7 @@
 [![Thymeleaf](https://img.shields.io/badge/Made%20with-Thymeleaf-005C0F.svg?style=flat&logo=thymeleaf&logoColor=white)](https://www.thymeleaf.org/)
 [![H2 Database](https://img.shields.io/badge/Database-H2-blue.svg?style=flat&logo=h2database&logoColor=white)](https://www.h2database.com)
 
-A simple, web-based student attendance system built with Spring Boot. This application uses QR codes to track student attendance and provides a dashboard for managing records.
+A simple, web-based student attendance system built with Spring Boot. This application uses QR codes to track student attendance and provides a home for managing records.
 
 ## Features
 
@@ -55,7 +55,7 @@ Once the application is running, open your web browser and go to:
 http://localhost:8080
 ```
 
-You will be greeted by the dashboard. From there, you can navigate to the other pages to manage students or scan QR codes.
+You will be greeted by the home. From there, you can navigate to the other pages to manage students or scan QR codes.
 
 ## License
 
