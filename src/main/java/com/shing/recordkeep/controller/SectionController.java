@@ -47,7 +47,7 @@ public class SectionController {
         return "redirect:/sections";
     }
 
-    @GetMapping("/students/{sectionId}")
+    @GetMapping("/sections/{sectionId}/students")
     public String manageStudents(@PathVariable Long sectionId, Model model, RedirectAttributes redirectAttributes) {
         try {
             model.addAttribute("students", studentService.getStudentsBySection(sectionId));
@@ -59,12 +59,12 @@ public class SectionController {
         }
     }
 
-    @PostMapping("/students")
+    @PostMapping("/sections/{sectionId}/students")
     public String createStudent(@RequestParam String lrn,
                                @RequestParam String firstName,
                                @RequestParam String surname,
                                @RequestParam String sex,
-                               @RequestParam Long sectionId,
+                               @PathVariable Long sectionId,
                                RedirectAttributes redirectAttributes) {
         try {
             Section section = studentService.getAllSections().stream()
@@ -85,16 +85,16 @@ public class SectionController {
             redirectAttributes.addFlashAttribute("errorMessage", "Error creating student: " + e.getMessage());
         }
         
-        return "redirect:/students/" + sectionId;
+        return "redirect:/sections/" + sectionId + "/students";
     }
 
-    @PostMapping("/students/import")
+    @PostMapping("/sections/{sectionId}/students/import")
     public String importStudents(@RequestParam("file") MultipartFile file,
-                                @RequestParam Long sectionId,
+                                @PathVariable Long sectionId,
                                 RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Please select a CSV file to upload.");
-            return "redirect:/students/" + sectionId;
+            return "redirect:/sections/" + sectionId + "/students";
         }
 
         try {
@@ -104,6 +104,6 @@ public class SectionController {
             redirectAttributes.addFlashAttribute("errorMessage", "Error importing file: " + e.getMessage());
         }
         
-        return "redirect:/students/" + sectionId;
+        return "redirect:/sections/" + sectionId + "/students";
     }
 }

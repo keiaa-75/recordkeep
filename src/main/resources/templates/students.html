@@ -97,8 +97,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/students}" method="post">
-                        <input type="hidden" name="sectionId" th:value="${sectionId}">
+                    <form th:action="@{/sections/{id}/students(id=${sectionId})}" method="post">
                         <div class="mb-3">
                             <input type="text" class="form-control border-dark border-2 rounded-3" name="lrn" placeholder="Learner's Reference Number" required>
                         </div>
@@ -134,8 +133,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/students/import}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="sectionId" th:value="${sectionId}">
+                    <form th:action="@{/sections/{id}/students/import(id=${sectionId})}" method="post" enctype="multipart/form-data">
                         <div class="border border-2 border-dashed rounded-3 p-5 text-center">
                             <i class="bi bi-cloud-upload fs-1 text-muted mb-3"></i>
                             <p class="mb-2">Choose a file or drag and drop it here</p>

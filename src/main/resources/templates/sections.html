@@ -24,7 +24,7 @@
         <!-- Section List -->
         <div class="mb-4">
             <div th:each="section : ${sections}" class="border-bottom border-dark py-3">
-                <a th:href="@{/students/{id}(id=${section.id})}" class="text-decoration-none text-dark d-block">
+                <a th:href="@{/sections/{id}/students(id=${section.id})}" class="text-decoration-none text-dark d-block">
                     <div class="fw-bold" th:text="${section.gradeLevel + ' - ' + section.strand + ' - ' + section.sectionName}">Grade 11 - STEM - Newton</div>
                 </a>
             </div>
