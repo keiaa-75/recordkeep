@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students | RecordKeep</title>
+    <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body { padding-bottom: 80px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; }
+        .fab { position: fixed; bottom: 90px; right: 20px; width: 56px; height: 56px; border-radius: 50%; }
+        .fab-menu { position: fixed; bottom: 160px; right: 20px; }
+        .fab-item { margin-bottom: 10px; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-4">
+            <a th:href="@{/sections}" class="text-dark me-3">
+                <i class="bi bi-chevron-left fs-4"></i>
+            </a>
+            <h4 class="fw-bold mb-0">Manage students</h4>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="row mb-4 g-2">
+            <div class="col-8">
+                <input type="text" class="form-control border-dark border-2 rounded-3" id="searchInput" placeholder="Search by name or LRN...">
+            </div>
+            <div class="col-4">
+                <select class="form-select border-dark border-2 rounded-3" id="sexFilter">
+                    <option value="">Sex</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Student List -->
+        <div id="studentList">
+            <div th:each="student : ${students}" class="border-bottom border-dark py-3 student-item" 
+                 th:data-name="${student.firstName + ' ' + student.surname}" 
+                 th:data-lrn="${student.lrn}" 
+                 th:data-sex="${student.sex}">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="border border-2 rounded-circle p-2" style="width: 40px; height: 40px;">
+                            <i class="bi bi-circle"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-bold" th:text="${student.firstName + ' ' + student.surname}">Student Name</div>
+                        <div class="small text-muted" th:text="${student.lrn}">123456789012</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Empty state -->
+            <div th:if="${students == null or students.isEmpty()}" class="text-center text-muted py-5">
+                <p>No students in this section yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab btn btn-dark d-flex align-items-center justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#fabMenu">
+        <i class="bi bi-plus fs-4"></i>
+    </button>
+
+    <!-- FAB Menu -->
+    <div class="collapse fab-menu" id="fabMenu">
+        <div class="fab-item">
+            <button class="btn btn-outline-dark border-2 rounded-3 px-3 py-2" data-bs-toggle="modal" data-bs-target="#newStudentModal">
+                <i class="bi bi-person-plus me-2"></i>New student
+            </button>
+        </div>
+        <div class="fab-item">
+            <button class="btn btn-outline-dark border-2 rounded-3 px-3 py-2" data-bs-toggle="modal" data-bs-target="#importStudentModal">
+                <i class="bi bi-upload me-2"></i>Import students
+            </button>
+        </div>
+        <div class="fab-item">
+            <button class="btn btn-outline-dark border-2 rounded-3 px-3 py-2">
+                <i class="bi bi-qr-code me-2"></i>Manage QR codes
+            </button>
+        </div>
+    </div>
+
+    <!-- New Student Modal -->
+    <div class="modal fade" id="newStudentModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-dark border-2 rounded-3">
+                <div class="modal-header border-bottom border-dark">
+                    <h5 class="modal-title fw-bold">New student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/students}" method="post">
+                        <input type="hidden" name="sectionId" th:value="${sectionId}">
+                        <div class="mb-3">
+                            <input type="text" class="form-control border-dark border-2 rounded-3" name="lrn" placeholder="Learner's Reference Number" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control border-dark border-2 rounded-3" name="firstName" placeholder="First name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control border-dark border-2 rounded-3" name="surname" placeholder="Last name" required>
+                        </div>
+                        <div class="mb-4">
+                            <select class="form-select border-dark border-2 rounded-3" name="sex" required>
+                                <option value="">Sex</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-outline-dark border-2 rounded-3 flex-fill" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-dark rounded-3 flex-fill">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Student Modal -->
+    <div class="modal fade" id="importStudentModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-dark border-2 rounded-3">
+                <div class="modal-header border-bottom border-dark">
+                    <h5 class="modal-title fw-bold">Import student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/students/import}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="sectionId" th:value="${sectionId}">
+                        <div class="border border-2 border-dashed rounded-3 p-5 text-center">
+                            <i class="bi bi-cloud-upload fs-1 text-muted mb-3"></i>
+                            <p class="mb-2">Choose a file or drag and drop it here</p>
+                            <p class="small text-muted mb-3">CSV format, up to 10MB</p>
+                            <input type="file" class="form-control d-none" id="csvFile" name="file" accept=".csv" required>
+                            <button type="button" class="btn btn-outline-dark border-2 rounded-3" onclick="document.getElementById('csvFile').click()">
+                                Browse File
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav bg-white border-top border-dark border-2 d-flex">
+        <a th:href="@{/}" class="flex-fill d-flex flex-column align-items-center justify-content-center text-decoration-none text-dark border-end border-dark border-2">
+            <i class="bi bi-house"></i>
+            <small>Home</small>
+        </a>
+        <a th:href="@{/sections}" class="flex-fill d-flex flex-column align-items-center justify-content-center text-decoration-none bg-dark text-white border-end border-dark border-2">
+            <i class="bi bi-list-ul"></i>
+            <small>List</small>
+        </a>
+        <a th:href="@{/scan}" class="flex-fill d-flex flex-column align-items-center justify-content-center text-decoration-none text-dark">
+            <i class="bi bi-qr-code-scan"></i>
+            <small>Scan</small>
+        </a>
+    </div>
+
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+    <script>
+        // Real-time search functionality
+        document.getElementById('searchInput').addEventListener('input', filterStudents);
+        document.getElementById('sexFilter').addEventListener('change', filterStudents);
+
+        function filterStudents() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sexFilter = document.getElementById('sexFilter').value;
+            const students = document.querySelectorAll('.student-item');
+
+            students.forEach(student => {
+                const name = student.dataset.name.toLowerCase();
+                const lrn = student.dataset.lrn.toLowerCase();
+                const sex = student.dataset.sex;
+
+                const matchesSearch = name.includes(searchTerm) || lrn.includes(searchTerm);
+                const matchesSex = !sexFilter || sex === sexFilter;
+
+                student.style.display = matchesSearch && matchesSex ? 'block' : 'none';
+            });
+        }
+
+        // File upload handling
+        document.getElementById('csvFile').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                e.target.closest('form').submit();
+            }
+        });
+    </script>
+</body>
+</html>

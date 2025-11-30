@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.shing.recordkeep.model.Section;
 import com.shing.recordkeep.model.Student;
+import com.shing.recordkeep.repository.SectionRepository;
 import com.shing.recordkeep.repository.StudentRepository;
 
 @Service
@@ -18,6 +20,9 @@ public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+    
+    @Autowired
+    private SectionRepository sectionRepository;
 
     public List<Student> getAllStudentsSorted() {
         return studentRepository.findAll(
@@ -82,5 +87,18 @@ public class StudentService {
 
     public void deleteById(String lrn) {
         studentRepository.deleteById(lrn);
+    }
+
+    // Section management methods
+    public List<Section> getAllSections() {
+        return sectionRepository.findAll();
+    }
+
+    public Section saveSection(Section section) {
+        return sectionRepository.save(section);
+    }
+
+    public List<Student> getStudentsBySection(Long sectionId) {
+        return studentRepository.findBySectionId(sectionId);
     }
 }
