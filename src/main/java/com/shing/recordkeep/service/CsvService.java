@@ -28,8 +28,11 @@ public class CsvService {
     @Autowired
     private SectionRepository sectionRepository;
 
-    public int importStudentsFromCsv(MultipartFile file) throws IOException, CsvValidationException, NumberFormatException, Exception {
+    public int importStudentsFromCsv(MultipartFile file, Long sectionId) throws IOException, CsvValidationException, NumberFormatException, Exception {
         
+        Section section = sectionRepository.findById(sectionId)
+                .orElseThrow(() -> new Exception("Section not found with ID: " + sectionId));
+
         List<Student> studentsToSave = new ArrayList<>();
         int rowCount = 0;
         
@@ -41,7 +44,7 @@ public class CsvService {
                 rowCount++;
                 System.out.println("Processing row " + rowCount + ": " + java.util.Arrays.toString(line));
                 
-                if (line.length < 8) {
+                if (line.length < 5) {
                     System.err.println("Skipping row " + rowCount + " - insufficient columns: " + line.length);
                     continue;
                 }
@@ -52,20 +55,7 @@ public class CsvService {
                     student.setSurname(line[1].trim());
                     student.setFirstName(line[2].trim());
                     student.setMiddleInitial(line[3].trim());
-                    student.setSex(line[7].trim());
-                    
-                    Section section = new Section();
-                    section.setStrand(line[4].trim());
-                    
-                    try {
-                        section.setGradeLevel(Integer.parseInt(line[5].trim()));
-                    } catch (NumberFormatException e) {
-                        System.err.println("Skipping row " + rowCount + " with invalid Grade Level: [" + line[5] + "]");
-                        continue; 
-                    }
-                    
-                    section.setSectionName(line[6].trim());
-                    section = sectionRepository.save(section);
+                    student.setSex(line[4].trim());
                     student.setSection(section);
                     
                     System.out.println("Successfully created student: " + student.getLrn());

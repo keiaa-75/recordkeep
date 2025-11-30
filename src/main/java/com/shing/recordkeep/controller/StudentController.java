@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shing.recordkeep.model.Section;
@@ -84,22 +83,5 @@ public class StudentController {
         return "redirect:/list";
     }
     
-    @PostMapping("/import")
-    public String importCsv(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-        
-        if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Please select a CSV file to upload.");
-            return "redirect:/list";
-        }
 
-        try {
-            int importedCount = csvService.importStudentsFromCsv(file);
-            redirectAttributes.addFlashAttribute("successMessage", "Successfully imported " + importedCount + " students.");
-        
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error importing file: " + e.getMessage());
-        }
-        
-        return "redirect:/list";
-    }
 }

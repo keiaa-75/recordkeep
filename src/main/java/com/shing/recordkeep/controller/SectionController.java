@@ -98,7 +98,7 @@ public class SectionController {
         }
 
         try {
-            int importedCount = csvService.importStudentsFromCsv(file);
+            int importedCount = csvService.importStudentsFromCsv(file, sectionId);
             redirectAttributes.addFlashAttribute("successMessage", "Successfully imported " + importedCount + " students.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error importing file: " + e.getMessage());
