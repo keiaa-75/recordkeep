@@ -35,10 +35,14 @@ public class StudentService {
     }
 
     public List<StudentWithAttendance> getStudentsWithAttendanceBySection(Long sectionId) {
+        return getStudentsWithAttendanceBySection(sectionId, LocalDate.now());
+    }
+
+    public List<StudentWithAttendance> getStudentsWithAttendanceBySection(Long sectionId, LocalDate date) {
         List<Student> students = studentRepository.findBySectionId(sectionId);
         List<String> attendedLrns = attendanceRepository.findByAttendanceTimeBetween(
-                LocalDate.now().atStartOfDay(),
-                LocalDate.now().plusDays(1).atStartOfDay()
+                date.atStartOfDay(),
+                date.plusDays(1).atStartOfDay()
             ).stream()
             .map(ar -> ar.getLrn())
             .collect(Collectors.toList());

@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentWithAttendance {
     private Student student;
-    private boolean attendedToday;
+    private boolean attendedOnDate;
 }

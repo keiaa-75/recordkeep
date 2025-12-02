@@ -1,5 +1,8 @@
 package com.shing.recordkeep.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,10 +51,18 @@ public class SectionController {
     }
 
     @GetMapping("/sections/{sectionId}/students")
-    public String manageStudents(@PathVariable Long sectionId, Model model, RedirectAttributes redirectAttributes) {
+    public String manageStudents(@PathVariable Long sectionId,
+                                 @RequestParam(required = false) String date,
+                                 Model model,
+                                 RedirectAttributes redirectAttributes) {
         try {
-            model.addAttribute("students", studentService.getStudentsWithAttendanceBySection(sectionId));
+            LocalDate selectedDate = (date != null && !date.isEmpty())
+                ? LocalDate.parse(date)
+                : LocalDate.now();
+
+            model.addAttribute("students", studentService.getStudentsWithAttendanceBySection(sectionId, selectedDate));
             model.addAttribute("sectionId", sectionId);
+            model.addAttribute("selectedDate", selectedDate.format(DateTimeFormatter.ISO_LOCAL_DATE)); // YYYY-MM-DD
             return "students";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Section not found.");
