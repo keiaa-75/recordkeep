@@ -64,6 +64,19 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
+    public Student updateStudent(String lrn, String firstName, String surname, String sex) {
+        Student student = studentRepository.findById(lrn)
+            .orElseThrow(() -> new RuntimeException("Student not found with LRN: " + lrn));
+        student.setFirstName(firstName);
+        student.setSurname(surname);
+        student.setSex(sex);
+        return studentRepository.save(student);
+    }
+
+    public void deleteStudent(String lrn) {
+        studentRepository.deleteById(lrn);
+    }
+
     public void deleteById(String lrn) {
         studentRepository.deleteById(lrn);
     }

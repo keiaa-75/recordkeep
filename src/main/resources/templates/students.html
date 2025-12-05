@@ -45,10 +45,14 @@
 
         <!-- Student List -->
         <div id="studentList">
-            <div th:each="swa : ${students}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3 student-item" 
-                 th:data-name="${swa.student.surname + ', ' + swa.student.firstName}" 
-                 th:data-lrn="${swa.student.lrn}" 
-                 th:data-sex="${swa.student.sex}">
+            <div th:each="swa : ${students}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3 student-item"
+                 th:data-name="${swa.student.surname + ', ' + swa.student.firstName}"
+                 th:data-lrn="${swa.student.lrn}"
+                 th:data-sex="${swa.student.sex}"
+                 th:data-firstname="${swa.student.firstName}"
+                 th:data-surname="${swa.student.surname}"
+                 th:data-sectionid="${sectionId}"
+                 style="cursor: pointer;">
                 <div class="d-flex align-items-center">
                     <div class="me-3">
                         <!-- Status circle: red by default, green only if scanned on selected date -->
@@ -63,11 +67,49 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Empty state -->
             <div th:if="${students == null or students.isEmpty()}" class="text-center text-muted py-5">
                 <div class="bg-white border border-dark border-2 rounded-3 p-5">
                     <p class="mb-0">No students in this section yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div class="modal fade" id="editStudentModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-dark border-2 rounded-3">
+                <div class="modal-header border-bottom border-dark">
+                    <h5 class="modal-title fw-bold">Edit student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editStudentForm" method="post">
+                        <div class="mb-3">
+                            <input type="text" class="form-control border-dark border-2 rounded-3" name="lrn" placeholder="Learner's Reference Number" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control border-dark border-2 rounded-3" name="firstName" placeholder="First name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control border-dark border-2 rounded-3" name="surname" placeholder="Last name" required>
+                        </div>
+                        <div class="mb-4">
+                            <select class="form-select border-dark border-2 rounded-3" name="sex" required>
+                                <option value="">Sex</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-dark rounded-3 flex-fill">Update</button>
+                        </div>
+                    </form>
+                    <form id="deleteStudentForm" method="post" class="mt-2">
+                        <button type="button" id="deleteStudentBtn" class="btn btn-outline-danger border-2 rounded-3 w-100">Delete</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -160,91 +202,6 @@
 
     <div th:replace="~{fragments/nav :: nav('list')}"></div>
     <div th:replace="~{fragments/scripts :: scripts}"></div>
-    <script>
-        // Submit form on date change
-        document.getElementById('dateFilter').addEventListener('change', function() {
-            document.getElementById('filterForm').submit();
-        });
-
-        // Real-time search functionality
-        document.getElementById('searchInput').addEventListener('input', filterStudents);
-        document.getElementById('sexFilter').addEventListener('change', filterStudents);
-
-        function filterStudents() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const sexFilter = document.getElementById('sexFilter').value;
-            const students = document.querySelectorAll('.student-item');
-
-            students.forEach(student => {
-                const name = student.dataset.name.toLowerCase();
-                const lrn = student.dataset.lrn.toLowerCase();
-                const sex = student.dataset.sex;
-
-                const matchesSearch = name.includes(searchTerm) || lrn.includes(searchTerm);
-                const matchesSex = !sexFilter || sex === sexFilter;
-
-                student.style.display = matchesSearch && matchesSex ? 'block' : 'none';
-            });
-        }
-
-        // File upload handling
-        document.getElementById('csvFile').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                e.target.closest('form').submit();
-            }
-        });
-
-        // QR Management State
-        const manageQrBtn = document.getElementById('manage-qr-btn');
-        const qrManagementCard = document.getElementById('qr-management-card');
-        const downloadZipBtn = document.getElementById('download-zip-btn-students');
-        const fabIcon = manageQrBtn.querySelector('i');
-
-        manageQrBtn.addEventListener('click', () => {
-            const isQrStateActive = qrManagementCard.style.display === 'block';
-
-            if (isQrStateActive) {
-                qrManagementCard.style.display = 'none';
-                fabIcon.classList.remove('bi-x');
-                fabIcon.classList.add('bi-plus');
-                document.querySelectorAll('.qr-checkbox-container').forEach(c => c.style.display = 'none');
-            } else {
-                qrManagementCard.style.display = 'block';
-                fabIcon.classList.remove('bi-plus');
-                fabIcon.classList.add('bi-x');
-                document.querySelectorAll('.qr-checkbox-container').forEach(c => c.style.display = 'block');
-            }
-        });
-
-        downloadZipBtn.addEventListener('click', () => {
-            const selectedLrns = Array.from(document.querySelectorAll('.student-qr-checkbox:checked'))
-                                      .map(cb => cb.getAttribute('data-lrn'));
-
-            if (selectedLrns.length === 0) {
-                alert('Please select at least one student to download QR codes for.');
-                return;
-            }
-
-            fetch('/download-qrs', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(selectedLrns),
-            })
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-a.style.display = 'none';
-                a.href = url;
-                a.download = 'qr-codes.zip';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            })
-            .catch(err => console.error('Error downloading zip:', err));
-        });
-    </script>
+    <script th:src="@{/js/students.js}"></script>
 </body>
 </html>
