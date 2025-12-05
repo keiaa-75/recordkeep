@@ -106,6 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const editStudentForm = document.getElementById('editStudentForm');
         const deleteStudentForm = document.getElementById('deleteStudentForm');
 
+        document.querySelectorAll('.student-qr-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+        });
+
         document.querySelectorAll('.student-item').forEach(item => {
             item.addEventListener('click', () => {
                 const lrn = item.dataset.lrn;
