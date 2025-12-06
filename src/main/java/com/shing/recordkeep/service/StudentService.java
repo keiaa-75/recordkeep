@@ -77,10 +77,6 @@ public class StudentService {
         studentRepository.deleteById(lrn);
     }
 
-    public void deleteById(String lrn) {
-        studentRepository.deleteById(lrn);
-    }
-
     // Section management methods
     public List<Section> getAllSections() {
         return sectionRepository.findAll();

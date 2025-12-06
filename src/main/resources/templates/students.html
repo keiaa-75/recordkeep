@@ -51,7 +51,9 @@
         <!-- Student List -->
         <div id="studentList">
             <div th:each="swa : ${students}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3 student-item"
-                 th:data-lrn="${swa.student.lrn}">
+                 th:data-lrn="${swa.student.lrn}"
+                 th:data-name="${swa.student.surname + ', ' + swa.student.firstName}"
+                 th:data-sex="${swa.student.sex}">
                 <div class="d-flex align-items-center">
                     <div class="me-3">
                         <!-- Status circle: red by default, green only if scanned on selected date -->
