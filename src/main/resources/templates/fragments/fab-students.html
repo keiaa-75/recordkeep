@@ -1,0 +1,23 @@
+<!-- Floating Action Button -->
+<button th:fragment="fab-students" class="fab btn btn-dark d-flex align-items-center justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#fabMenu">
+    <i class="bi bi-plus fs-4"></i>
+</button>
+
+<!-- FAB Menu -->
+<div th:fragment="fab-students-menu" class="collapse fab-menu" id="fabMenu">
+    <div class="fab-item">
+        <button class="btn btn-dark border-2 rounded-3 px-3 py-2" data-bs-toggle="modal" data-bs-target="#newStudentModal">
+            <i class="bi bi-person-plus me-2"></i>New student
+        </button>
+    </div>
+    <div class="fab-item">
+        <button class="btn btn-dark border-2 rounded-3 px-3 py-2" data-bs-toggle="modal" data-bs-target="#importStudentModal">
+            <i class="bi bi-upload me-2"></i>Import students
+        </button>
+    </div>
+    <div class="fab-item">
+        <button id="manage-qr-btn" class="btn btn-dark border-2 rounded-3 px-3 py-2">
+            <i class="bi bi-qr-code me-2"></i>Manage QR codes
+        </button>
+    </div>
+</div>

@@ -8,9 +8,6 @@
             <div class="modal-body">
                 <form id="editStudentForm" th:action="@{/sections/{sectionId}/students/{lrn}/update(sectionId=${student.section.id}, lrn=${student.lrn})}" th:object="${student}" method="post">
                     <div class="mb-3">
-                        <input type="text" class="form-control border-dark border-2 rounded-3" th:field="*{lrn}" placeholder="Learner's Reference Number" readonly>
-                    </div>
-                    <div class="mb-3">
                         <input type="text" class="form-control border-dark border-2 rounded-3" th:field="*{firstName}" placeholder="First name" required>
                     </div>
                     <div class="mb-3">
