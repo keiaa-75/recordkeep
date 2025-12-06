@@ -54,7 +54,19 @@
                         </div>
                         <div>
                             <div class="fw-bold">View student list</div>
-                            <div class="small text-muted">Open the scanner to record attendance</div>
+                            <div class="small text-muted">Manage sections and student records</div>
+                        </div>
+                    </div>
+                </a>
+
+                <a th:href="@{/csv/student-import-template.csv}" download="student-import-template.csv" class="btn btn-outline-dark border-2 rounded-3 w-100 p-3 text-start">
+                    <div class="d-flex align-items-center">
+                        <div class="border border-dark border-2 rounded-2 p-2 me-3">
+                            <i class="bi bi-download fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold">Download template</div>
+                            <div class="small text-muted">For batch importing student details</div>
                         </div>
                     </div>
                 </a>
