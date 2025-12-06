@@ -7,7 +7,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,8 +30,7 @@ public class Student {
     @NotBlank(message = "First Name is required")
     private String firstName;
     
-    @Size(max = 10)
-    private String middleInitial;
+    private Character middleInitial;
 
     @NotBlank(message = "Sex is required")
     @Pattern(regexp = "^(Male|Female)$", message = "Sex must be either 'Male' or 'Female'")

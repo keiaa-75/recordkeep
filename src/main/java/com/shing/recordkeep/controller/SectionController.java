@@ -73,6 +73,7 @@ public class SectionController {
     @PostMapping("/sections/{sectionId}/students")
     public String createStudent(@RequestParam String lrn,
                                @RequestParam String firstName,
+                               @RequestParam(required = false) Character middleInitial,
                                @RequestParam String surname,
                                @RequestParam String sex,
                                @PathVariable Long sectionId,
@@ -93,6 +94,7 @@ public class SectionController {
             Student student = new Student();
             student.setLrn(lrn);
             student.setFirstName(firstName);
+            student.setMiddleInitial(middleInitial);
             student.setSurname(surname);
             student.setSex(sex);
             student.setSection(section);

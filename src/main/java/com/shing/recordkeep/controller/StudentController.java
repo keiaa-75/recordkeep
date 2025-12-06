@@ -35,9 +35,10 @@ public class StudentController {
                                               @PathVariable Long sectionId,
                                               @RequestParam String firstName,
                                               @RequestParam String surname,
+                                              @RequestParam(required = false) Character middleInitial,
                                               @RequestParam String sex) {
         try {
-            studentService.updateStudent(lrn, firstName, surname, sex);
+            studentService.updateStudent(lrn, firstName, surname, middleInitial, sex);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

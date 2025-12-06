@@ -54,7 +54,12 @@ public class CsvService {
                     student.setLrn(line[0].trim());
                     student.setSurname(line[1].trim());
                     student.setFirstName(line[2].trim());
-                    student.setMiddleInitial(line[3].trim());
+                    String middleInitialStr = line[3].trim();
+                    if (!middleInitialStr.isEmpty()) {
+                        student.setMiddleInitial(middleInitialStr.charAt(0));
+                    } else {
+                        student.setMiddleInitial(null);
+                    }
                     student.setSex(line[4].trim());
                     student.setSection(section);
                     

@@ -46,7 +46,7 @@
         <div id="studentList">
             <div th:each="swa : ${students}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3 student-item"
                  th:data-lrn="${swa.student.lrn}"
-                 th:data-name="${swa.student.surname + ', ' + swa.student.firstName}"
+                 th:data-name="${swa.student.surname + ', ' + swa.student.firstName + (swa.student.middleInitial != null ? ' ' + swa.student.middleInitial : '')}"
                  th:data-sex="${swa.student.sex}">
                 <div class="d-flex align-items-center">
                     <div class="me-3">
@@ -54,7 +54,7 @@
                         <div class="rounded-circle" th:classappend="${swa.attendedOnDate} ? 'bg-success' : 'bg-danger'" style="width: 12px; height: 12px;"></div>
                     </div>
                     <div class="flex-grow-1">
-                        <div class="fw-bold" th:text="${swa.student.surname + ', ' + swa.student.firstName}">Student Name</div>
+                        <div class="fw-bold" th:text="${swa.student.surname + ', ' + swa.student.firstName + (swa.student.middleInitial != null ? ' ' + swa.student.middleInitial + '.' : '')}">Student Name</div>
                         <div class="small text-muted" th:text="${swa.student.lrn}">123456789012</div>
                     </div>
                     <div class="qr-checkbox-container" style="display: none;">

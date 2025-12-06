@@ -64,11 +64,12 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student updateStudent(String lrn, String firstName, String surname, String sex) {
+    public Student updateStudent(String lrn, String firstName, String surname, Character middleInitial, String sex) {
         Student student = studentRepository.findById(lrn)
             .orElseThrow(() -> new RuntimeException("Student not found with LRN: " + lrn));
         student.setFirstName(firstName);
         student.setSurname(surname);
+        student.setMiddleInitial(middleInitial);
         student.setSex(sex);
         return studentRepository.save(student);
     }
