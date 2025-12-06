@@ -77,6 +77,13 @@ public class SectionController {
                                @RequestParam String sex,
                                @PathVariable Long sectionId,
                                RedirectAttributes redirectAttributes) {
+
+        // Check for existing LRN
+        if (studentService.findById(lrn).isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error creating student: A student with LRN '" + lrn + "' already exists.");
+            return "redirect:/sections/" + sectionId + "/students";
+        }
+
         try {
             Section section = studentService.getAllSections().stream()
                 .filter(s -> s.getId().equals(sectionId))
