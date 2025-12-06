@@ -100,43 +100,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Edit Student Modal
-    const editStudentModalElement = document.getElementById('editStudentModal');
-    if (editStudentModalElement) {
-        const editStudentModal = new bootstrap.Modal(editStudentModalElement);
-        const editStudentForm = document.getElementById('editStudentForm');
-        const deleteStudentForm = document.getElementById('deleteStudentForm');
+    const modalContainer = document.getElementById('editStudentModalContainer');
 
-        document.querySelectorAll('.student-qr-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('click', (event) => {
-                event.stopPropagation();
-            });
+    document.querySelectorAll('.student-qr-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('click', (event) => {
+            event.stopPropagation();
         });
+    });
 
-        document.querySelectorAll('.student-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const lrn = item.dataset.lrn;
-                const firstName = item.dataset.firstname;
-                const surname = item.dataset.surname;
-                const sex = item.dataset.sex;
-                const sectionId = item.dataset.sectionid;
+    document.querySelectorAll('.student-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const lrn = item.dataset.lrn;
+            
+            fetch(`/web/students/edit/${lrn}`)
+                .then(response => response.text())
+                .then(html => {
+                    modalContainer.innerHTML = html;
+                    
+                    const editModal = new bootstrap.Modal(modalContainer.querySelector('#editStudentModal'));
+                    
+                    const editForm = modalContainer.querySelector('#editStudentForm');
+                    if (editForm) {
+                        editForm.addEventListener('submit', (e) => {
+                            e.preventDefault();
+                            
+                            const formData = new FormData(editForm);
+                            fetch(editForm.action, {
+                                method: 'POST',
+                                body: formData
+                            }).then(response => {
+                                if (response.ok) {
+                                    location.reload();
+                                } else {
+                                    alert('Error updating student.');
+                                }
+                            });
+                        });
+                    }
 
-                editStudentForm.action = `/sections/${sectionId}/students/${lrn}/update`;
-                editStudentForm.querySelector('[name="lrn"]').value = lrn;
-                editStudentForm.querySelector('[name="firstName"]').value = firstName;
-                editStudentForm.querySelector('[name="surname"]').value = surname;
-                editStudentForm.querySelector('[name="sex"]').value = sex;
-                
-                deleteStudentForm.action = `/sections/${sectionId}/students/${lrn}/delete`;
-
-                editStudentModal.show();
-            });
+                    const deleteBtn = modalContainer.querySelector('#deleteStudentBtn');
+                    const deleteForm = modalContainer.querySelector('#deleteStudentForm');
+                    if (deleteBtn && deleteForm) {
+                        deleteBtn.addEventListener('click', () => {
+                            if (confirm('Are you sure you want to delete this student?')) {
+                                fetch(deleteForm.action, {
+                                    method: 'POST'
+                                }).then(response => {
+                                    if (response.ok) {
+                                        location.reload();
+                                    } else {
+                                        alert('Error deleting student.');
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    
+                    editModal.show();
+                });
         });
-        
-        const deleteStudentBtn = document.getElementById('deleteStudentBtn');
-        deleteStudentBtn.addEventListener('click', () => {
-            if (confirm('Are you sure you want to delete this student?')) {
-                deleteStudentForm.submit();
-            }
-        });
-    }
+    });
 });
