@@ -1,0 +1,12 @@
+<div th:fragment="alerts">
+    <div th:if="${successMessage}" class="alert bg-white border border-dark border-2 rounded-3 d-flex align-items-center alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2 text-success"></i>
+        <span class="text-dark" th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${errorMessage}" class="alert bg-white border border-dark border-2 rounded-3 d-flex align-items-center alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2 text-danger"></i>
+        <span class="text-dark" th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
