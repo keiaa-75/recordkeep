@@ -78,9 +78,17 @@ public class StudentService {
         studentRepository.deleteById(lrn);
     }
 
+    public void deleteSection(Long id) {
+        sectionRepository.deleteById(id);
+    }
+
     // Section management methods
     public List<Section> getAllSections() {
         return sectionRepository.findAll();
+    }
+
+    public Optional<Section> findSectionById(Long id) {
+        return sectionRepository.findById(id);
     }
 
     public Section saveSection(Section section) {

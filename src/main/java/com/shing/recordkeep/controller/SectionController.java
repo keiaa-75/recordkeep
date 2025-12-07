@@ -50,6 +50,36 @@ public class SectionController {
         return "redirect:/sections";
     }
 
+    @GetMapping("/sections/edit/{id}")
+    public String showEditSectionModal(@PathVariable Long id, Model model) {
+        studentService.findSectionById(id).ifPresent(section -> {
+            model.addAttribute("section", section);
+        });
+        return "fragments/edit-section-modal :: edit-section-modal";
+    }
+
+    @PostMapping("/sections/update")
+    public String updateSection(@ModelAttribute Section section, RedirectAttributes redirectAttributes) {
+        try {
+            studentService.saveSection(section);
+            redirectAttributes.addFlashAttribute("successMessage", "Section updated successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error updating section: " + e.getMessage());
+        }
+        return "redirect:/sections";
+    }
+
+    @PostMapping("/sections/delete/{id}")
+    public String deleteSection(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            studentService.deleteSection(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Section deleted successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error deleting section. Make sure there are no students assigned to it first.");
+        }
+        return "redirect:/sections";
+    }
+
     @GetMapping("/sections/{sectionId}/students")
     public String manageStudents(@PathVariable Long sectionId,
                                  @RequestParam(required = false) String date,

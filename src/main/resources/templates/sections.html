@@ -14,10 +14,13 @@
         </div>
 
         <!-- Section List -->
-        <div class="container py-4">
-            <div th:each="section : ${sections}" class="bg-white border border-dark border-2 rounded-3 mb-3 p-3">
-                <a th:href="@{/sections/{id}/students(id=${section.id})}" class="text-decoration-none text-dark d-block">
+        <div class="container py-4" id="sectionList">
+            <div th:each="section : ${sections}" class="d-flex align-items-center bg-white border border-dark border-2 rounded-3 mb-3 p-3">
+                <a th:href="@{/sections/{id}/students(id=${section.id})}" class="text-decoration-none text-dark d-block flex-grow-1">
                     <div class="fw-bold" th:text="${section.gradeLevel + ' - ' + section.strand + ' - ' + section.sectionName}">Grade 11 - STEM - Newton</div>
+                </a>
+                <a href="#" class="text-dark edit-section-btn" th:data-section-id="${section.id}">
+                    <i class="bi bi-pencil-fill fs-5"></i>
                 </a>
             </div>
             
@@ -75,7 +78,11 @@
         </div>
     </div>
 
+    <!-- Edit Section Modal Placeholder -->
+    <div id="editSectionModalContainer"></div>
+
     <div th:replace="~{fragments/nav :: nav('list')}"></div>
     <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <script th:src="@{/js/sections.js}"></script>
 </body>
 </html>
