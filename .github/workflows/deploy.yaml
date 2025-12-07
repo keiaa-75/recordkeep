@@ -1,0 +1,51 @@
+name: Deploy Spring Boot Application
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          
+      - name: Import other properties
+        run: |
+          mkdir -p ./deploy-config
+          echo "${{ secrets.DATASOURCE }}" > ./src/main/resources/datasource.properties
+
+      - name: Clean and Build with Maven
+        run: mvn -B clean package -DskipTests=false --file pom.xml
+        
+      - name: Deploy Artifact to VPS
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          source: "target/rkeep.jar"
+          target: "/opt/rkeep/"
+          strip_components: 1
+
+      - name: Restart service on VPS
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            sudo systemctl restart rkeep.service
+            echo "Deployment finished and service restarted."
