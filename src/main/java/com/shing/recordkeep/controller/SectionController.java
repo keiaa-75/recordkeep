@@ -96,10 +96,15 @@ public class SectionController {
             LocalDate selectedDate = (date != null && !date.isEmpty())
                 ? LocalDate.parse(date)
                 : LocalDate.now();
+            
+            Section section = studentService.findSectionById(sectionId)
+                .orElseThrow(() -> new RuntimeException("Section not found"));
 
             model.addAttribute("students", studentService.getStudentsWithAttendanceBySection(sectionId, selectedDate));
             model.addAttribute("sectionId", sectionId);
             model.addAttribute("selectedDate", selectedDate.format(DateTimeFormatter.ISO_LOCAL_DATE)); // YYYY-MM-DD
+            model.addAttribute("newStudent", new Student());
+            model.addAttribute("section", section);
             return "students";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Section not found.");
@@ -108,17 +113,13 @@ public class SectionController {
     }
 
     @PostMapping("/sections/{sectionId}/students")
-    public String createStudent(@RequestParam String lrn,
-                               @RequestParam String firstName,
-                               @RequestParam(required = false) Character middleInitial,
-                               @RequestParam String surname,
-                               @RequestParam String sex,
+    public String createStudent(@ModelAttribute("newStudent") Student student,
                                @PathVariable Long sectionId,
                                RedirectAttributes redirectAttributes) {
 
         // Check for existing LRN
-        if (studentService.findById(lrn).isPresent()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error creating student: A student with LRN '" + lrn + "' already exists.");
+        if (studentService.findById(student.getLrn()).isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error creating student: A student with LRN '" + student.getLrn() + "' already exists.");
             return "redirect:/sections/" + sectionId + "/students";
         }
 
@@ -128,12 +129,6 @@ public class SectionController {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Section not found"));
 
-            Student student = new Student();
-            student.setLrn(lrn);
-            student.setFirstName(firstName);
-            student.setMiddleInitial(middleInitial);
-            student.setSurname(surname);
-            student.setSex(sex);
             student.setSection(section);
             
             studentService.save(student);
