@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Error')}"></head>
+<head th:replace="~{fragments/layout/head :: head('Error')}"></head>
 <body class="bg-light error-page">
 
     <div class="main-content container d-flex align-items-center justify-content-center">
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <div th:replace="~{fragments/nav :: nav('')}"></div>
-    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <div th:replace="~{fragments/layout/nav :: nav('')}"></div>
+    <div th:replace="~{fragments/layout/scripts :: scripts}"></div>
 </body>
 </html>

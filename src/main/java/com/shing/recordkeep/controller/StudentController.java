@@ -26,7 +26,7 @@ public class StudentController {
         Student student = studentService.findById(lrn)
             .orElseThrow(() -> new RuntimeException("Student not found with LRN: " + lrn));
         model.addAttribute("student", student);
-        return "fragments/edit-student-modal";
+        return "fragments/modals/edit-student-modal :: edit-student-modal";
     }
 
     @PostMapping("/sections/{sectionId}/students/{lrn}/update")

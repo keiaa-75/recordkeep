@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Manage Students')}"></head>
+<head th:replace="~{fragments/layout/head :: head('Manage Students')}"></head>
 <body class="bg-light">
     <style>
         .student-item {
@@ -22,10 +22,10 @@
         <div class="container py-4">
 
             <!-- Alerts -->
-            <div th:replace="~{fragments/alerts :: alerts}"></div>
+            <div th:replace="~{fragments/components/alerts :: alerts}"></div>
 
         <!-- Search and Filter -->
-        <div th:replace="~{fragments/search-and-filter-students :: search-and-filter}"></div>
+        <div th:replace="~{fragments/components/search-and-filter-students :: search-and-filter}"></div>
 
         <!-- QR Management Card -->
         <div id="qr-management-card" class="card bg-white border border-dark border-2 mb-4" style="display: none;">
@@ -69,19 +69,19 @@
     <div id="editStudentModalContainer"></div>
 
     <!-- Floating Action Button -->
-    <div th:replace="~{fragments/fab-students :: fab-students}"></div>
+    <div th:replace="~{fragments/components/fab-students :: fab-students}"></div>
 
     <!-- FAB Menu -->
-    <div th:replace="~{fragments/fab-students :: fab-students-menu}"></div>
+    <div th:replace="~{fragments/components/fab-students :: fab-students-menu}"></div>
 
     <!-- New Student Modal -->
-    <div th:replace="~{fragments/new-student-modal :: new-student-modal}"></div>
+    <div th:replace="~{fragments/modals/new-student-modal :: new-student-modal}"></div>
 
     <!-- Import Student Modal -->
-    <div th:replace="~{fragments/import-student-modal :: import-student-modal}"></div>
+    <div th:replace="~{fragments/modals/import-student-modal :: import-student-modal}"></div>
 
-    <div th:replace="~{fragments/nav :: nav('list')}"></div>
-    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <div th:replace="~{fragments/layout/nav :: nav('list')}"></div>
+    <div th:replace="~{fragments/layout/scripts :: scripts}"></div>
     <script th:src="@{/js/students.js}"></script>
 </body>
 </html>

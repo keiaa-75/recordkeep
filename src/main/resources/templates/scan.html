@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Scan')}"></head>
+<head th:replace="~{fragments/layout/head :: head('Scan')}"></head>
 <body class="bg-light">
     <div class="container-fluid p-0">
         <!-- Header -->
@@ -52,8 +52,8 @@
         </div>
     </div>
 
-    <div th:replace="~{fragments/nav :: nav('scan')}"></div>
-    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <div th:replace="~{fragments/layout/nav :: nav('scan')}"></div>
+    <div th:replace="~{fragments/layout/scripts :: scripts}"></div>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script th:src="@{/js/scan.js}"></script>
 </body>

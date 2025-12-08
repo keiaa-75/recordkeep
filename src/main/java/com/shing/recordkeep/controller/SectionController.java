@@ -55,7 +55,7 @@ public class SectionController {
         studentService.findSectionById(id).ifPresent(section -> {
             model.addAttribute("section", section);
         });
-        return "fragments/edit-section-modal :: edit-section-modal";
+        return "fragments/modals/edit-section-modal :: edit-section-modal";
     }
 
     @PostMapping("/sections/update")

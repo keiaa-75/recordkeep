@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Home')}"></head>
+<head th:replace="~{fragments/layout/head :: head('Home')}"></head>
 <body class="bg-light">
     <div class="container py-4">
         <!-- Header -->
@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <div th:replace="~{fragments/nav :: nav('home')}"></div>
-    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <div th:replace="~{fragments/layout/nav :: nav('home')}"></div>
+    <div th:replace="~{fragments/layout/scripts :: scripts}"></div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Select Section')}"></head>
+<head th:replace="~{fragments/layout/head :: head('Select Section')}"></head>
 <body class="bg-light">
     <div class="container-fluid p-0">
         <!-- Header -->
@@ -16,7 +16,7 @@
         <!-- Section List -->
         <div class="container py-4" id="sectionList">
             <!-- Alerts -->
-            <div th:replace="~{fragments/alerts :: alerts}"></div>
+            <div th:replace="~{fragments/components/alerts :: alerts}"></div>
 
             <div th:each="section : ${sections}" class="d-flex align-items-center bg-white border border-dark border-2 rounded-3 mb-3 p-3">
                 <a th:href="@{/sections/{id}/students(id=${section.id})}" class="text-decoration-none text-dark d-block flex-grow-1">
@@ -84,8 +84,8 @@
     <!-- Edit Section Modal Placeholder -->
     <div id="editSectionModalContainer"></div>
 
-    <div th:replace="~{fragments/nav :: nav('list')}"></div>
-    <div th:replace="~{fragments/scripts :: scripts}"></div>
+    <div th:replace="~{fragments/layout/nav :: nav('list')}"></div>
+    <div th:replace="~{fragments/layout/scripts :: scripts}"></div>
     <script th:src="@{/js/sections.js}"></script>
 </body>
 </html>
