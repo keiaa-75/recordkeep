@@ -26,7 +26,7 @@
                         </select>
                     </div>
                     <div class="mb-4">
-                        <input type="text" class="form-control border-dark border-2 rounded-3" th:field="*{sectionName}" placeholder="Section name" required>
+                        <input type="text" class="form-control border-dark border-2 rounded-3" th:field="*{sectionName}" placeholder="Section name" required oninput="this.value = this.value.replace(/[0-9]/g, '');">
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-dark rounded-3">Update</button>
