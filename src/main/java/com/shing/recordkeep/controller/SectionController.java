@@ -71,18 +71,11 @@ public class SectionController {
 
     @PostMapping("/sections/delete/{id}")
     public String deleteSection(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        // Check if the section has students first
-        if (!studentService.getStudentsBySection(id).isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Cannot delete section: It still contains students. Please remove them first.");
-            return "redirect:/sections";
-        }
-
         try {
             studentService.deleteSection(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Section deleted successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Section and all its related students and attendance records have been deleted successfully!");
         } catch (Exception e) {
-            // This catch block is now more for unexpected errors, as the main expected error is handled above.
-            redirectAttributes.addFlashAttribute("errorMessage", "An unexpected error occurred while deleting the section.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Error deleting section: " + e.getMessage());
         }
         return "redirect:/sections";
     }
